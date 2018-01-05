@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyName>CityOs.FileServer.FileProvider</AssemblyName>
+    <RootNamespace>CityOs.FileServer.FileProvider</RootNamespace>
+  </PropertyGroup>
+
+</Project>
