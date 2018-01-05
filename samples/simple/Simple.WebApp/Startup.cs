@@ -1,4 +1,5 @@
-﻿using IdentityModel.AspNetCore.OAuth2Introspection;
+﻿using CityOs.FileServer.Core;
+using IdentityModel.AspNetCore.OAuth2Introspection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -24,6 +25,9 @@ namespace CityOs.FileServer.Simple.WebApp
                     options.Authority = "http://localhost:5000";
                     options.RequireHttpsMetadata = false;
                 });
+
+
+            services.AddMvc().AddFileServer();
         }
 
         /// <summary>
