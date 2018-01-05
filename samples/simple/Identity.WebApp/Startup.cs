@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace CityOs.FileServer.Simple.WebApp
+namespace Identity.WebApp
 {
     public class Startup
     {
@@ -14,6 +14,10 @@ namespace CityOs.FileServer.Simple.WebApp
         /// <param name="services"></param>
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddIdentityServer()
+                .AddDeveloperSigningCredential()
+                .AddInMemoryApiResources(Configuration.GetApiResources())
+                .AddInMemoryClients(Configuration.GetClients());
             services.AddMvc().AddFileServer();
         }
 
@@ -29,6 +33,7 @@ namespace CityOs.FileServer.Simple.WebApp
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseIdentityServer();
 
             app.UseMvc(routes =>
             {
@@ -37,11 +42,7 @@ namespace CityOs.FileServer.Simple.WebApp
                         name: "default",
                         template: "{controller=Home}/{action=Index}/{id?}");
             });
-
-            //app.Run(async (context) =>
-            //{
-            //    await context.Response.WriteAsync("Hello World!");
-            //});
+            
         }
     }
 }
