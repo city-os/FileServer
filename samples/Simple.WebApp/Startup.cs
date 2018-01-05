@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using CityOs.FileServer.Core;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,6 +14,7 @@ namespace CityOs.FileServer.Simple.WebApp
         /// <param name="services"></param>
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddMvc().AddFileServer();
         }
 
         /// <summary>
@@ -27,10 +29,19 @@ namespace CityOs.FileServer.Simple.WebApp
                 app.UseDeveloperExceptionPage();
             }
 
-            app.Run(async (context) =>
+
+            app.UseMvc(routes =>
             {
-                await context.Response.WriteAsync("Hello World!");
+                routes
+                    .MapRoute(
+                        name: "default",
+                        template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            //app.Run(async (context) =>
+            //{
+            //    await context.Response.WriteAsync("Hello World!");
+            //});
         }
     }
 }
