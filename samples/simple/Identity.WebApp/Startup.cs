@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using CityOs.FileServer.Core;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,6 +18,7 @@ namespace Identity.WebApp
                 .AddDeveloperSigningCredential()
                 .AddInMemoryApiResources(Configuration.GetApiResources())
                 .AddInMemoryClients(Configuration.GetClients());
+            services.AddMvc().AddFileServer();
         }
 
         /// <summary>
@@ -32,6 +34,15 @@ namespace Identity.WebApp
             }
 
             app.UseIdentityServer();
+
+            app.UseMvc(routes =>
+            {
+                routes
+                    .MapRoute(
+                        name: "default",
+                        template: "{controller=Home}/{action=Index}/{id?}");
+            });
+            
         }
     }
 }
