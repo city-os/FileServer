@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Core\Core.csproj" />
+    <ProjectReference Include="..\..\..\src\Distributed.Mvc\Distributed.Mvc.csproj" />
   </ItemGroup>
 
 </Project>

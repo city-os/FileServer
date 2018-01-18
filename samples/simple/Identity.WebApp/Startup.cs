@@ -1,7 +1,5 @@
-﻿using CityOs.FileServer.Core;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Identity.WebApp
@@ -18,7 +16,8 @@ namespace Identity.WebApp
                 .AddDeveloperSigningCredential()
                 .AddInMemoryApiResources(Configuration.GetApiResources())
                 .AddInMemoryClients(Configuration.GetClients());
-            services.AddMvc().AddFileServer();
+
+            services.AddMvc();
         }
 
         /// <summary>
