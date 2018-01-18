@@ -1,4 +1,5 @@
 ﻿using CityOs.FileServer.Distributed.Mvc.Extensions;
+using CityOs.FileServer.Provider.FileSystem.Extensions;
 using IdentityModel.AspNetCore.OAuth2Introspection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -25,7 +26,10 @@ namespace CityOs.FileServer.Simple.WebApp
                     options.RequireHttpsMetadata = false;
                 });
 
-            services.AddFileServer();
+            services.AddFileServer(options =>
+            {
+                options.UseFileSystem();
+            });
         }
 
         /// <summary>

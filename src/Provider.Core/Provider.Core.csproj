@@ -2,13 +2,12 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <AssemblyName>CityOs.FileServer.Infrastructure</AssemblyName>
-    <RootNamespace>CityOs.FileServer.Infrastructure</RootNamespace>
+    <AssemblyName>CityOs.FileServer.Provider.Core</AssemblyName>
+    <RootNamespace>CityOs.FileServer.Provider.Core</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Domain\Domain.csproj" />
-    <ProjectReference Include="..\Provider.Core\Provider.Core.csproj" />
   </ItemGroup>
 
 </Project>

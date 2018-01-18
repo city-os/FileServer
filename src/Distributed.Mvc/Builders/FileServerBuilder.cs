@@ -1,14 +1,13 @@
-﻿using System;
-using CityOs.FileServer.AppService;
+﻿using CityOs.FileServer.AppService;
 using CityOs.FileServer.Domain.Contracts;
 using CityOs.FileServer.Domain.Services;
 using CityOs.FileServer.Infrastructure.Repositories;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace CityOs.FileServer.Distributed.Mvc
 {
-    internal class FileServerBuilder : IFileServerBuilder
+    public class FileServerBuilder : IFileServerBuilder
     {
         /// <summary>
         /// The available services
@@ -27,15 +26,36 @@ namespace CityOs.FileServer.Distributed.Mvc
         /// <summary>
         /// Try to add core services to services collection
         /// </summary>
-        internal void TryAddCoreServices()
+        public void TryAddCoreServices()
         {
             _services.AddSingleton<IDocumentAppService, DocumentAppService>();
             _services.AddSingleton<IFileDomainService, FileDomainService>();
-            _services.AddSingleton<IDocumentRepository>(provider =>
-            {
-                var env = provider.GetService<IHostingEnvironment>();
-                return new DocumentRepository(env.WebRootPath);
-            });
+            _services.AddSingleton<IDocumentRepository, DocumentRepository>();
+        }
+
+        /// <summary>
+        /// Try add singleton to the service collection
+        /// </summary>
+        /// <typeparam name="TInterface">The interface</typeparam>
+        /// <typeparam name="TImplementation">The implementation of the interface</typeparam>
+        public void TryAddSingleton<TInterface, TImplementation>() 
+            where TImplementation : class, TInterface
+            where TInterface : class
+        {
+            _services.AddSingleton<TInterface, TImplementation>();
+        }
+
+        /// <summary>
+        /// Try add singleton to the service collection
+        /// </summary>
+        /// <typeparam name="TInterface">The interface</typeparam>
+        /// <typeparam name="TImplementation">The implementation</typeparam>
+        /// <param name="implementationFactory">The factory of the implementation</param>
+        public void TryAddSingleton<TInterface, TImplementation>(Func<IServiceProvider, TImplementation> implementationFactory)
+            where TImplementation : class, TInterface
+            where TInterface : class
+        {
+            _services.AddSingleton<TInterface, TImplementation>(implementationFactory);
         }
     }
 }
