@@ -18,5 +18,12 @@ namespace CityOs.FileServer.AppService
         /// <param name="stream">The stream to use</param>
         /// <returns></returns>
         Task<string> SaveImageAsync(Stream stream, string fileName, string contentType);
+
+        /// <summary>
+        /// Delete an image asynchronously
+        /// </summary>
+        /// <param name="imageName">The image name</param>
+        /// <returns></returns>
+        Task DeleteImageAsync(string imageName);
     }
 }

@@ -24,6 +24,19 @@ namespace CityOs.FileServer.Infrastructure.Repositories
         }
 
         /// <inheritdoc />
+        public Task DeleteImageAsync(string imageName)
+        {
+            var filePath = Path.Combine(_baseFolder, imageName);
+
+            if (File.Exists(filePath))
+            {
+                File.Delete(filePath);
+            }
+
+            return Task.CompletedTask;
+        }
+
+        /// <inheritdoc />
         public Task<Stream> GetFileStreamByIdentifierAsync(string fileIdentifier)
         {
             var filePath = Path.Combine(_baseFolder, fileIdentifier);

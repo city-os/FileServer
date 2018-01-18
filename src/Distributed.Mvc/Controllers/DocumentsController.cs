@@ -42,5 +42,13 @@ namespace CityOs.FileServer.Distributed.Mvc.Controllers
 
             return Ok(savedFileName);
         }
+
+        [HttpDelete("images/{imageName}")]
+        public async Task<IActionResult> DeleteImageAsync(string imageName)
+        {
+            await _documentAppService.DeleteImageAsync(imageName);
+
+            return Ok();
+        }
     }
 }

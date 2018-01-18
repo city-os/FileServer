@@ -29,6 +29,12 @@ namespace CityOs.FileServer.AppService
         }
 
         /// <inheritdoc />
+        public Task DeleteImageAsync(string imageName)
+        {
+            return _documentRepository.DeleteImageAsync(imageName);
+        }
+
+        /// <inheritdoc />
         public Task<Stream> GetImageStreamByIdentifierAsync(string imageName)
         {
             return _documentRepository.GetFileStreamByIdentifierAsync(imageName);
