@@ -1,0 +1,1 @@
+﻿[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("CityOs.FileServer.Distributed.Mvc")]

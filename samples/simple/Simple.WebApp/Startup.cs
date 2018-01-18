@@ -1,8 +1,8 @@
-﻿using CityOs.FileServer.Core;
+﻿using CityOs.FileServer.Distributed.Mvc.Extensions;
+using CityOs.FileServer.Provider.FileSystem.Extensions;
 using IdentityModel.AspNetCore.OAuth2Introspection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CityOs.FileServer.Simple.WebApp
@@ -26,8 +26,10 @@ namespace CityOs.FileServer.Simple.WebApp
                     options.RequireHttpsMetadata = false;
                 });
 
-
-            services.AddMvc().AddFileServer();
+            services.AddFileServer(options =>
+            {
+                options.UseFileSystem();
+            });
         }
 
         /// <summary>
@@ -38,6 +40,8 @@ namespace CityOs.FileServer.Simple.WebApp
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             app.UseAuthentication();
+
+            app.UseFileServer2();
 
             app.UseMvcWithDefaultRoute();
         }
