@@ -1,7 +1,9 @@
 ﻿using CityOs.FileServer.AppService;
+using CityOs.FileServer.Distributed.Mvc.Security;
 using CityOs.FileServer.Domain.Contracts;
 using CityOs.FileServer.Domain.Services;
 using CityOs.FileServer.Infrastructure.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
@@ -31,6 +33,12 @@ namespace CityOs.FileServer.Distributed.Mvc
             _services.AddSingleton<IDocumentAppService, DocumentAppService>();
             _services.AddSingleton<IFileDomainService, FileDomainService>();
             _services.AddSingleton<IDocumentRepository, DocumentRepository>();
+
+            _services.AddAuthorization(a => a.AddPolicy("ReadDocument", builder => builder.AddRequirements(new ReadAuthorizationRequirement())));
+            _services.AddAuthorization(a => a.AddPolicy("WriteDocument", builder => builder.AddRequirements(new WriteAuthorizationRequirement())));
+
+            _services.AddSingleton<IAuthorizationHandler, ReadAuthorizationHandler>();
+            _services.AddSingleton<IAuthorizationHandler, WriteAuthorizationHandler>();
         }
 
         /// <summary>
