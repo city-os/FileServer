@@ -18,13 +18,13 @@ namespace CityOs.FileServer.Domain.Contracts
         /// </summary>
         /// <param name="fileInformation">The file information to use</param>
         /// <returns></returns>
-        Task<string> SaveImageAsync(FileInformation fileInformation);
+        Task<string> SaveDocumentAsync(FileInformation fileInformation);
 
         /// <summary>
         /// Delete an image asynchronously
         /// </summary>
         /// <param name="imageName">The image to delete</param>
         /// <returns></returns>
-        Task DeleteImageAsync(string imageName);
+        Task DeleteDocumentAsync(string imageName);
     }
 }

@@ -9,9 +9,10 @@ namespace CityOs.FileServer.Provider.Core
         /// <summary>
         /// Write a file asynchronously
         /// </summary>
-        /// <param name="fileInformation">The file information</param>
+        /// <param name="fileStream">The file stream</param>
+        /// <param name="fileName">The file name</param>
         /// <returns></returns>
-        Task<string> WriteFileAsync(FileInformation fileInformation);
+        Task WriteFileAsync(Stream fileStream, string fileName);
 
         /// <summary>
         /// Delete a file asynchronously

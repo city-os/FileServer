@@ -31,8 +31,12 @@ namespace CityOs.FileServer.Distributed.Mvc
         public void TryAddCoreServices()
         {
             _services.AddSingleton<IDocumentAppService, DocumentAppService>();
+            _services.AddSingleton<IImageAppService, ImageAppService>();
+
             _services.AddSingleton<IFileDomainService, FileDomainService>();
+
             _services.AddSingleton<IDocumentRepository, DocumentRepository>();
+            _services.AddSingleton<IImageRepository, ImageRepository>();
 
             _services.AddAuthorization(a => a.AddPolicy("ReadDocument", builder => builder.AddRequirements(new ReadAuthorizationRequirement())));
             _services.AddAuthorization(a => a.AddPolicy("WriteDocument", builder => builder.AddRequirements(new WriteAuthorizationRequirement())));

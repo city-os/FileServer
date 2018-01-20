@@ -1,8 +1,5 @@
-﻿using System;
-using System.IO;
-using System.Text.RegularExpressions;
+﻿using System.IO;
 using System.Threading.Tasks;
-using CityOs.FileServer.Domain.Entities;
 using CityOs.FileServer.Provider.Core;
 
 namespace CityOs.FileServer.Provider.FileSystem
@@ -52,21 +49,16 @@ namespace CityOs.FileServer.Provider.FileSystem
         }
 
         /// <inheritdoc />
-        public async Task<string> WriteFileAsync(FileInformation fileInformation)
+        public async Task WriteFileAsync(Stream fileStream, string fileName)
         {
-            var uid = Regex.Replace(Convert.ToBase64String(Guid.NewGuid().ToByteArray()), "[/+=]", "");
-
-            string fileExtension = Path.GetExtension(fileInformation.OriginalFileName);
-            string fileName = uid + fileExtension;
-
             var filePath = Path.Combine(_baseFolder, fileName);
 
             using (var file = File.Create(filePath))
             {
-                await fileInformation.Stream.CopyToAsync(file);
-            }
+                fileStream.Seek(0, SeekOrigin.Begin);
 
-            return fileName;
+                await fileStream.CopyToAsync(file);
+            }
         }
     }
 }

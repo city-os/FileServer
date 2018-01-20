@@ -1,7 +1,6 @@
-﻿using System;
-using System.IO;
-using System.Text.RegularExpressions;
+﻿using System.IO;
 using System.Threading.Tasks;
+using CityOs.FileServer.Crosscutting.Helpers;
 using CityOs.FileServer.Domain.Contracts;
 using CityOs.FileServer.Domain.Entities;
 using CityOs.FileServer.Provider.Core;
@@ -25,7 +24,7 @@ namespace CityOs.FileServer.Infrastructure.Repositories
         }
 
         /// <inheritdoc />
-        public Task DeleteImageAsync(string imageName)
+        public Task DeleteDocumentAsync(string imageName)
         {
             return _fileServerProvider.DeleteFileAsync(imageName);
         }
@@ -37,9 +36,16 @@ namespace CityOs.FileServer.Infrastructure.Repositories
         }
 
         /// <inheritdoc />
-        public Task<string> SaveImageAsync(FileInformation fileInformation)
+        public async Task<string> SaveDocumentAsync(FileInformation fileInformation)
         {
-            return _fileServerProvider.WriteFileAsync(fileInformation);
+            var uniqueFileName = StringHelper.GetUniqueFileName();
+            var extension = Path.GetExtension(fileInformation.OriginalFileName);
+
+            var newFileName = uniqueFileName + extension;
+
+            await _fileServerProvider.WriteFileAsync(fileInformation.Stream, newFileName);
+
+            return newFileName;
         }
     }
 }
