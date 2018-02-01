@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2020
+VisualStudioVersion = 15.0.27130.2027
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{551D14D7-7B17-41B8-88FC-A4946B692D3F}"
 EndProject
@@ -37,7 +37,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Provider.Core", "src\Provid
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Provider.FileSystem", "src\Provider.FileSystem\Provider.FileSystem.csproj", "{102BC91F-B5A8-4125-8064-C5A5904B4628}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dto", "src\Dto\Dto.csproj", "{1C58A746-D512-4108-A439-778A3A00ECFA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dto", "src\Dto\Dto.csproj", "{1C58A746-D512-4108-A439-778A3A00ECFA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{151F4DB1-843C-46FE-A19D-EA6FB0ED8677}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileServer.Tests", "tests\FileServer\FileServer.Tests.csproj", "{E2DA76A8-36CD-4362-BDC2-0FDE8030FDB2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -85,6 +89,10 @@ Global
 		{1C58A746-D512-4108-A439-778A3A00ECFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1C58A746-D512-4108-A439-778A3A00ECFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1C58A746-D512-4108-A439-778A3A00ECFA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E2DA76A8-36CD-4362-BDC2-0FDE8030FDB2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E2DA76A8-36CD-4362-BDC2-0FDE8030FDB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E2DA76A8-36CD-4362-BDC2-0FDE8030FDB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E2DA76A8-36CD-4362-BDC2-0FDE8030FDB2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -106,6 +114,7 @@ Global
 		{51C21679-802C-4DC4-98EB-D12A8D625638} = {B275ECD4-1C0D-4C07-8C42-25450EBC0F7F}
 		{102BC91F-B5A8-4125-8064-C5A5904B4628} = {B275ECD4-1C0D-4C07-8C42-25450EBC0F7F}
 		{1C58A746-D512-4108-A439-778A3A00ECFA} = {68F90725-7DD1-4272-9A26-0E9074C902D7}
+		{E2DA76A8-36CD-4362-BDC2-0FDE8030FDB2} = {151F4DB1-843C-46FE-A19D-EA6FB0ED8677}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2E7A85AA-53A4-44BF-8ADF-A176AFF0C3AB}

@@ -15,4 +15,8 @@
     <ProjectReference Include="..\Dto\Dto.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Adapters\Resolvers\" />
+  </ItemGroup>
+
 </Project>
