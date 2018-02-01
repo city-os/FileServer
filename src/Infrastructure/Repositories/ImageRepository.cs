@@ -116,6 +116,10 @@ namespace CityOs.FileServer.Infrastructure.Repositories
         /// <inheritdoc />
         public async Task<FileInformation> GetStreamByFileNameAsync(string fileName, ImageQuery imageQuery)
         {
+            var fileExists = await _fileServerProvider.FileExists(fileName);
+
+            if (!fileExists) return null;
+
             using (var fileStream = await _fileServerProvider.GetFileByIdentifierAsync(fileName))
             using (var image = Image.Load(fileStream))
             {

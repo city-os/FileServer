@@ -27,5 +27,12 @@ namespace CityOs.FileServer.Provider.Core
         /// <param name="fileName">The file name</param>
         /// <returns></returns>
         Task<Stream> GetFileByIdentifierAsync(string fileName);
+
+        /// <summary>
+        /// Check if the file exist
+        /// </summary>
+        /// <param name="fileName">The file name</param>
+        /// <returns></returns>
+        Task<bool> FileExists(string fileName);
     }
 }

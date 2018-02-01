@@ -34,6 +34,16 @@ namespace CityOs.FileServer.Provider.FileSystem
         }
 
         /// <inheritdoc />
+        public Task<bool> FileExists(string fileName)
+        {
+            var filePath = Path.Combine(_baseFolder, fileName);
+
+            var exists = File.Exists(filePath);
+
+            return Task.FromResult(exists);
+        }
+
+        /// <inheritdoc />
         public Task<Stream> GetFileByIdentifierAsync(string fileName)
         {
             var filePath = Path.Combine(_baseFolder, fileName);
