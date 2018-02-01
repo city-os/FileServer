@@ -62,7 +62,8 @@ namespace CityOs.FileServer.Infrastructure.Repositories
             {
                 if (image.Height > 1000 || image.Width > 1000)
                 {
-                    var resizeOptions = new ResizeOptions
+                    
+                       var resizeOptions = new ResizeOptions
                     {
                         Mode = ResizeMode.Max,
                         Size = new SixLabors.Primitives.Size(1000, 1000)
@@ -74,24 +75,7 @@ namespace CityOs.FileServer.Infrastructure.Repositories
                     {
                         var extension = Path.GetExtension(newThumbFileName);
 
-                        IImageFormat format = null;
-
-                        switch (extension)
-                        {
-                            case ".jpg":
-                                format = ImageFormats.Jpeg;
-                                break;
-                            case ".jpeg":
-                                format = ImageFormats.Jpeg;
-                                break;
-                            case ".png":
-                                format = ImageFormats.Png;
-                                break;
-                            default:
-                                break;
-                        }
-
-                        if (format == null) throw new Exception("Format non reconnu");
+                        IImageFormat format = Image.DetectFormat(stream);
 
                         image.Save(memoryStream, format);
 
@@ -135,24 +119,7 @@ namespace CityOs.FileServer.Infrastructure.Repositories
 
                 var extension = Path.GetExtension(fileName);
 
-                IImageFormat format = null;
-
-                switch (extension)
-                {
-                    case ".jpg":
-                        format = ImageFormats.Jpeg;
-                        break;
-                    case ".jpeg":
-                        format = ImageFormats.Jpeg;
-                        break;
-                    case ".png":
-                        format = ImageFormats.Png;
-                        break;
-                    default:
-                        break;
-                }
-
-                if (format == null) throw new Exception("Format non reconnu");
+                IImageFormat format = Image.DetectFormat(fileStream);
 
                 image.Save(memoryStream, format);
 
