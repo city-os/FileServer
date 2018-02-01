@@ -1,4 +1,5 @@
 ﻿using CityOs.FileServer.AppService;
+using CityOs.FileServer.Distributed.Mvc.Extensions;
 using CityOs.FileServer.Dto;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -26,17 +27,19 @@ namespace CityOs.FileServer.Distributed.Mvc.Controllers
         [HttpGet("{fileName}")]
         public async Task<IActionResult> GetImageByNameAsync(string fileName, [FromQuery] ImageQueryDto imageQuery)
         {
-            var stream = await _imageAppService.GetStreamByFileNameAsync(fileName, imageQuery);
+            var fileInformation = await _imageAppService.GetStreamByFileNameAsync(fileName, imageQuery);
 
-            if (stream == null) return NotFound();
+            if (fileInformation == null) return NotFound();
 
-            return File(stream, "image/jpeg");
+            return File(fileInformation.Stream, fileInformation.FileType);
         }
 
         [HttpPost]
         public async Task<IActionResult> SaveImageAsync(IFormFile image, bool isPublic = false)
         {
-            var savedImage = await _imageAppService.SaveImageAsync(image.OpenReadStream(), image.FileName, image.ContentType);
+            var fileInformationDto = image.ToFileInfoDto();
+
+            var savedImage = await _imageAppService.SaveImageAsync(fileInformationDto);
 
             return Ok(savedImage);
         }

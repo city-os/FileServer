@@ -8,6 +8,7 @@ using CityOs.FileServer.Provider.Core;
 using ImageSharp;
 using ImageSharp.Formats;
 using ImageSharp.Processing;
+using MimeMapping;
 
 namespace CityOs.FileServer.Infrastructure.Repositories
 {
@@ -113,7 +114,7 @@ namespace CityOs.FileServer.Infrastructure.Repositories
         }
 
         /// <inheritdoc />
-        public async Task<Stream> GetStreamByFileNameAsync(string fileName, ImageQuery imageQuery)
+        public async Task<FileInformation> GetStreamByFileNameAsync(string fileName, ImageQuery imageQuery)
         {
             using (var fileStream = await _fileServerProvider.GetFileByIdentifierAsync(fileName))
             using (var image = Image.Load(fileStream))
@@ -153,7 +154,7 @@ namespace CityOs.FileServer.Infrastructure.Repositories
 
                 memoryStream.Seek(0, SeekOrigin.Begin);
 
-                return memoryStream;
+                return new FileInformation(memoryStream, fileName, MimeUtility.GetMimeMapping(extension));
             }
         }
     }

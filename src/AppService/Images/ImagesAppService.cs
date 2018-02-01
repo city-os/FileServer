@@ -1,4 +1,5 @@
-﻿using CityOs.FileServer.Domain.Contracts;
+﻿using AutoMapper;
+using CityOs.FileServer.Domain.Contracts;
 using CityOs.FileServer.Domain.Entities;
 using CityOs.FileServer.Dto;
 using System.IO;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CityOs.FileServer.AppService
 {
-    public class ImageAppService : IImageAppService
+    public class ImageAppService : AppServiceBase, IImageAppService
     {
         /// <summary>
         /// The image repository
@@ -17,27 +18,31 @@ namespace CityOs.FileServer.AppService
         /// Initialize a default <see cref="ImageAppService"/>
         /// </summary>
         /// <param name="imageRepository">The <see cref="IImageRepository"/></param>
-        public ImageAppService(IImageRepository imageRepository)
+        public ImageAppService(IImageRepository imageRepository, IMapper mapper) : base(mapper)
         {
             _imageRepository = imageRepository;
         }
 
         /// <inheritdoc />
-        public Task<Stream> GetStreamByFileNameAsync(string fileName, ImageQueryDto imageQuery)
+        public async Task<FileInformationDto> GetStreamByFileNameAsync(string fileName, ImageQueryDto imageQueryDto)
         {
-            var imageQueryEntity = new ImageQuery
+            var imageQuery = new ImageQuery
             {
-                Height = imageQuery.Height,
-                Width = imageQuery.Width
+                Height = imageQueryDto.Height,
+                Width = imageQueryDto.Width
             };
 
-            return _imageRepository.GetStreamByFileNameAsync(fileName, imageQueryEntity);
+            var fileInformation = await _imageRepository.GetStreamByFileNameAsync(fileName, imageQuery);
+
+            var fileInformationDto = Mapper.Map<FileInformationDto>(fileInformation);
+
+            return fileInformationDto;
         }
 
         /// <inheritdoc />
-        public async Task<SavedImageDto> SaveImageAsync(Stream imageStream, string fileName, string contentType)
+        public async Task<SavedImageDto> SaveImageAsync(FileInformationDto fileInformationDto)
         {
-            var fileInformation = new FileInformation(imageStream, fileName, contentType);
+            var fileInformation = Mapper.Map<FileInformation>(fileInformationDto);
 
             var savedImageUrl = await _imageRepository.SaveImageAsync(fileInformation);
 
@@ -53,15 +58,13 @@ namespace CityOs.FileServer.AppService
         /// <param name="fileName">The file name</param>
         /// <param name="imageQuery">The image query</param>
         /// <returns></returns>
-        Task<Stream> GetStreamByFileNameAsync(string fileName, ImageQueryDto imageQuery);
-
+        Task<FileInformationDto> GetStreamByFileNameAsync(string fileName, ImageQueryDto imageQuery);
+        
         /// <summary>
-        /// Save an image asynchronously
+        /// Save a file asynchronously
         /// </summary>
-        /// <param name="imageStream">The image stream</param>
-        /// <param name="fileName">The image file name</param>
-        /// <param name="contentType">The image content type</param>
-        /// <returns>The saved image informations</returns>
-        Task<SavedImageDto> SaveImageAsync(Stream imageStream, string fileName, string contentType);
+        /// <param name="fileInformationDto">The file information data transfert object</param>
+        /// <returns></returns>
+        Task<SavedImageDto> SaveImageAsync(FileInformationDto fileInformationDto);
     }
 }

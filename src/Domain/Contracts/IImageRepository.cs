@@ -18,6 +18,6 @@ namespace CityOs.FileServer.Domain.Contracts
         /// </summary>
         /// <param name="fileName">The file name to retrieve</param>
         /// <returns></returns>
-        Task<Stream> GetStreamByFileNameAsync(string fileName, ImageQuery imageQuery);
+        Task<FileInformation> GetStreamByFileNameAsync(string fileName, ImageQuery imageQuery);
     }
 }
