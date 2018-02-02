@@ -9,6 +9,7 @@ namespace CityOs.FileServer.AppService.Adapters
         public FileServerProfile()
         {
             CreateMap<FileInformationDto, FileInformation>();
+            CreateMap<ImageQueryDto, ImageQuery>();
         }
     }
 }

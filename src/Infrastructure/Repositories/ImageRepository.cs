@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using CityOs.FileServer.Crosscutting.Helpers;
 using CityOs.FileServer.Domain.Contracts;
 using CityOs.FileServer.Domain.Entities;
+using CityOs.FileServer.Domain.Services;
 using CityOs.FileServer.Provider.Core;
 using ImageSharp;
 using ImageSharp.Formats;
@@ -20,12 +21,18 @@ namespace CityOs.FileServer.Infrastructure.Repositories
         private readonly IFileServerProvider _fileServerProvider;
 
         /// <summary>
+        /// The image domain service
+        /// </summary>
+        private readonly IImageDomainService _imageDomainService;
+
+        /// <summary>
         /// Initialize a default <see cref="ImageRepository"/>
         /// </summary>
         /// <param name="fileServerProvider">The provider who server file</param>
-        public ImageRepository(IFileServerProvider fileServerProvider)
+        public ImageRepository(IFileServerProvider fileServerProvider, IImageDomainService imageDomainService)
         {
             _fileServerProvider = fileServerProvider;
+            _imageDomainService = imageDomainService;
         }
 
         /// <inheritdoc />
@@ -98,14 +105,39 @@ namespace CityOs.FileServer.Infrastructure.Repositories
         }
 
         /// <inheritdoc />
-        public async Task<FileInformation> GetStreamByFileNameAsync(string fileName, ImageQuery imageQuery)
+        public async Task<FileInformation> GetImageByNameAsync(string fileName, ImageQuery imageQuery)
         {
-            var fileExists = await _fileServerProvider.FileExists(fileName);
+            var fileNameToUse = await GetFileNameToUse(fileName, imageQuery);
 
-            if (!fileExists) return null;
-
-            using (var fileStream = await _fileServerProvider.GetFileByIdentifierAsync(fileName))
+            if (fileNameToUse == null) return null;
+            
+            using (var fileStream = await _fileServerProvider.GetFileByIdentifierAsync(fileNameToUse))
             using (var image = Image.Load(fileStream))
+            {
+                IImageFormat format = Image.DetectFormat(fileStream);
+
+                var stream = GetResizeStream(image, format, imageQuery);
+                
+                var extension = Path.GetExtension(fileName);
+                
+                return new FileInformation(stream, fileName, MimeUtility.GetMimeMapping(extension));
+            }
+        }
+
+        /// <summary>
+        /// Gets the resized image stream
+        /// </summary>
+        /// <param name="image">The image</param>
+        /// <param name="format">The image format</param>
+        /// <param name="imageQuery">The image query</param>
+        /// <returns></returns>
+        private Stream GetResizeStream(Image<Rgba32> image, IImageFormat format, ImageQuery imageQuery)
+        {
+            var memoryStream = new MemoryStream();
+            
+            var shouldResize = _imageDomainService.ShouldResize(imageQuery, image.Height, image.Width);
+
+            if (shouldResize)
             {
                 var resizeOptions = new ResizeOptions
                 {
@@ -114,19 +146,45 @@ namespace CityOs.FileServer.Infrastructure.Repositories
                 };
 
                 image.Resize(resizeOptions);
-
-                var memoryStream = new MemoryStream();
-
-                var extension = Path.GetExtension(fileName);
-
-                IImageFormat format = Image.DetectFormat(fileStream);
-
-                image.Save(memoryStream, format);
-
-                memoryStream.Seek(0, SeekOrigin.Begin);
-
-                return new FileInformation(memoryStream, fileName, MimeUtility.GetMimeMapping(extension));
             }
+
+            image.Save(memoryStream, format);
+
+            memoryStream.Seek(0, SeekOrigin.Begin);
+
+            return memoryStream;
+        }
+
+        /// <summary>
+        /// Get the file name to use
+        /// </summary>
+        /// <param name="fileName">The file name to check</param>
+        /// <param name="imageQuery">The image query</param>
+        /// <returns></returns>
+        private async Task<string> GetFileNameToUse(string fileName, ImageQuery imageQuery)
+        {
+            var useThumbnail = _imageDomainService.UseThumbnail(imageQuery);
+
+            if (useThumbnail)
+            {
+                var thumbnailName = _imageDomainService.GetFileThumbnailName(fileName);
+
+                var thumbnailExists = await _fileServerProvider.FileExists(thumbnailName);
+
+                if (thumbnailExists)
+                {
+                    return thumbnailName;
+                }
+            }
+
+            var originalFileExists = await _fileServerProvider.FileExists(fileName);
+
+            if (originalFileExists)
+            {
+                return fileName;
+            }
+
+            return null;
         }
     }
 }

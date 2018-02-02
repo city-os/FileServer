@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using CityOs.FileServer.AppService;
 using CityOs.FileServer.AppService.Adapters;
+using CityOs.FileServer.Domain.Services;
 using CityOs.FileServer.Dto;
 using CityOs.FileServer.Infrastructure.Repositories;
 using CityOs.FileServer.Tests.Mocks;
@@ -27,23 +28,22 @@ namespace CityOs.FileServer.Tests.AppService
         }
 
         [TestMethod]
-        public async Task Should_GetImage_When_QueryHaveRightInformations()
+        public async Task Should_GetOriginalImage_When_QueryHaveDefaultInformations()
         {
             var appService = GetDefaultImageAppService();
-            var imageQuery = GetDefaultImageQueryDto();
+            var imageQuery = new ImageQueryDto();
 
             var fileInformation = await appService.GetStreamByFileNameAsync(FileName, imageQuery);
 
-            IsImageValid(fileInformation.Stream, imageQuery.Height, imageQuery.Width);
-
             Assert.IsNotNull(fileInformation);
+            Assert.IsTrue(IsImageValid(fileInformation.Stream, 480, 640));
             Assert.AreEqual(fileInformation.OriginalFileName, FileName);
             Assert.AreEqual(fileInformation.FileType, "image/png");
             Assert.IsNotNull(fileInformation.Stream);
         }
 
         [TestMethod]
-        public async Task Should_GetImage_When_QueryOnlyHeight()
+        public async Task Should_GetResizeImage_When_QueryOnlyHeight()
         {
             var appService = GetDefaultImageAppService();
 
@@ -53,16 +53,15 @@ namespace CityOs.FileServer.Tests.AppService
 
             var fileInformation = await appService.GetStreamByFileNameAsync(FileName, imageQuery);
 
-            IsImageValid(fileInformation.Stream, imageQuery.Height, imageQuery.Width);
-
             Assert.IsNotNull(fileInformation);
+            Assert.IsTrue(IsImageValid(fileInformation.Stream, imageQuery.Height, null));
             Assert.AreEqual(fileInformation.OriginalFileName, FileName);
             Assert.AreEqual(fileInformation.FileType, "image/png");
             Assert.IsNotNull(fileInformation.Stream);
         }
 
         [TestMethod]
-        public async Task Should_GetImage_When_QueryOnlyWidth()
+        public async Task Should_GetResizeImage_When_QueryOnlyWidth()
         {
             var appService = GetDefaultImageAppService();
 
@@ -71,10 +70,45 @@ namespace CityOs.FileServer.Tests.AppService
             imageQuery.Height = 0;
 
             var fileInformation = await appService.GetStreamByFileNameAsync(FileName, imageQuery);
+                        
+            Assert.IsNotNull(fileInformation);
+            Assert.IsTrue(IsImageValid(fileInformation.Stream, null, imageQuery.Width));
+            Assert.AreEqual(fileInformation.OriginalFileName, FileName);
+            Assert.AreEqual(fileInformation.FileType, "image/png");
+            Assert.IsNotNull(fileInformation.Stream);
+        }
 
-            IsImageValid(fileInformation.Stream, imageQuery.Width, null);
+        [TestMethod]
+        public async Task Should_GetOriginalImage_When_QueryTooLargeWidth()
+        {
+            var appService = GetDefaultImageAppService();
+
+            var imageQuery = GetDefaultImageQueryDto();
+            imageQuery.Width = 6000;
+            imageQuery.Height = 0;
+
+            var fileInformation = await appService.GetStreamByFileNameAsync(FileName, imageQuery);
 
             Assert.IsNotNull(fileInformation);
+            Assert.IsTrue(IsImageValid(fileInformation.Stream, null, 640));
+            Assert.AreEqual(fileInformation.OriginalFileName, FileName);
+            Assert.AreEqual(fileInformation.FileType, "image/png");
+            Assert.IsNotNull(fileInformation.Stream);
+        }
+
+        [TestMethod]
+        public async Task Should_GetOriginalImage_When_QueryTooLargeHeight()
+        {
+            var appService = GetDefaultImageAppService();
+
+            var imageQuery = GetDefaultImageQueryDto();
+            imageQuery.Height = 80000;
+            imageQuery.Width = 0;
+
+            var fileInformation = await appService.GetStreamByFileNameAsync(FileName, imageQuery);
+
+            Assert.IsNotNull(fileInformation);
+            Assert.IsTrue(IsImageValid(fileInformation.Stream, 480, null));
             Assert.AreEqual(fileInformation.OriginalFileName, FileName);
             Assert.AreEqual(fileInformation.FileType, "image/png");
             Assert.IsNotNull(fileInformation.Stream);
@@ -99,7 +133,8 @@ namespace CityOs.FileServer.Tests.AppService
         private ImageAppService GetDefaultImageAppService()
         {
             var fileServerProvider = new MockFileServerProvider();
-            var repository = new ImageRepository(fileServerProvider);
+            var imageDomainService = new ImageDomainService();
+            var repository = new ImageRepository(fileServerProvider, imageDomainService);
             var appService = new ImageAppService(repository, Mapper.Instance);
 
             return appService;

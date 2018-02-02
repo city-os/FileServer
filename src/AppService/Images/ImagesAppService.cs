@@ -2,7 +2,6 @@
 using CityOs.FileServer.Domain.Contracts;
 using CityOs.FileServer.Domain.Entities;
 using CityOs.FileServer.Dto;
-using System.IO;
 using System.Threading.Tasks;
 
 namespace CityOs.FileServer.AppService
@@ -26,13 +25,9 @@ namespace CityOs.FileServer.AppService
         /// <inheritdoc />
         public async Task<FileInformationDto> GetStreamByFileNameAsync(string fileName, ImageQueryDto imageQueryDto)
         {
-            var imageQuery = new ImageQuery
-            {
-                Height = imageQueryDto.Height,
-                Width = imageQueryDto.Width
-            };
+            var imageQuery = Mapper.Map<ImageQuery>(imageQueryDto);
 
-            var fileInformation = await _imageRepository.GetStreamByFileNameAsync(fileName, imageQuery);
+            var fileInformation = await _imageRepository.GetImageByNameAsync(fileName, imageQuery);
 
             var fileInformationDto = Mapper.Map<FileInformationDto>(fileInformation);
 

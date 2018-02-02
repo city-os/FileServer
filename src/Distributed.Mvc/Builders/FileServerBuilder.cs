@@ -36,6 +36,7 @@ namespace CityOs.FileServer.Distributed.Mvc
             _services.AddScoped<IImageAppService, ImageAppService>();
 
             _services.AddScoped<IFileDomainService, FileDomainService>();
+            _services.AddScoped<IImageDomainService, ImageDomainService>();
 
             _services.AddScoped<IDocumentRepository, DocumentRepository>();
             _services.AddScoped<IImageRepository, ImageRepository>();
