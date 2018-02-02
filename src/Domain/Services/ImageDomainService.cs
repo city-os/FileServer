@@ -23,7 +23,7 @@ namespace CityOs.FileServer.Domain.Services
         /// <inheritdoc />
         public bool UseThumbnail(ImageQuery imageQuery)
         {
-            if (IsFullHd(imageQuery.Width, imageQuery.Height))
+            if (!IsFullHd(imageQuery.Width, imageQuery.Height))
             {
                 return true;
             }
@@ -49,12 +49,12 @@ namespace CityOs.FileServer.Domain.Services
         /// <returns></returns>
         private bool IsFullHd(int firstSide, int secondSide)
         {
-            if(firstSide > 1920 && secondSide > 1080)
+            if(firstSide > 1920 || secondSide > 1080)
             {
                 return true;
             }
 
-            if(firstSide > 1080 && secondSide > 1920)
+            if(firstSide > 1080 || secondSide > 1920)
             {
                 return true;
             }
