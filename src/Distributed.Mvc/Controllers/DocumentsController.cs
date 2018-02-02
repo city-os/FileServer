@@ -1,7 +1,7 @@
 ﻿using CityOs.FileServer.AppService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Threading.Tasks;
 
 namespace CityOs.FileServer.Distributed.Mvc.Controllers
@@ -23,6 +23,7 @@ namespace CityOs.FileServer.Distributed.Mvc.Controllers
             _documentAppService = documentAppService;
         }
 
+        [Authorize("ReadDocument")]
         [HttpGet("images/{imageName}")]
         public async Task<IActionResult> GetImageByIdentifierAsync(string imageName)
         {
@@ -33,6 +34,7 @@ namespace CityOs.FileServer.Distributed.Mvc.Controllers
             return File(stream, "image/jpeg");
         }
 
+        [Authorize("WriteDocument")]
         [HttpPost("images")]
         public async Task<IActionResult> SaveImageAsync(IFormFile file)
         {
@@ -43,6 +45,7 @@ namespace CityOs.FileServer.Distributed.Mvc.Controllers
             return Ok(savedFileName);
         }
 
+        [Authorize("WriteDocument")]
         [HttpDelete("images/{imageName}")]
         public async Task<IActionResult> DeleteImageAsync(string imageName)
         {

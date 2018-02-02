@@ -5,7 +5,7 @@ namespace CityOs.FileServer.Distributed.Mvc.Extensions
 {
     public static class FileServerApplicationBuilderExtensions
     {
-        public static void UseFileServer2(this IApplicationBuilder app)
+        public static void UseSimpleFileServer(this IApplicationBuilder app)
         {
             app.UseMiddleware<FileServerErrorHandlingMiddleware>();
         }

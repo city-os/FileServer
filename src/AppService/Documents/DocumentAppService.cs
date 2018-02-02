@@ -31,7 +31,7 @@ namespace CityOs.FileServer.AppService
         /// <inheritdoc />
         public Task DeleteImageAsync(string imageName)
         {
-            return _documentRepository.DeleteImageAsync(imageName);
+            return _documentRepository.DeleteDocumentAsync(imageName);
         }
 
         /// <inheritdoc />
@@ -47,7 +47,7 @@ namespace CityOs.FileServer.AppService
 
             _fileDomainService.ValidateFileInformation(fileInfo);
 
-            return _documentRepository.SaveImageAsync(fileInfo);
+            return _documentRepository.SaveDocumentAsync(fileInfo);
         }
     }
 }

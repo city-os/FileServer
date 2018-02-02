@@ -562,3 +562,6 @@ typings/
 
 # End of https://www.gitignore.io/api/csharp,aspnetcore,visualstudio,visualstudiocode
 /samples/simple/Identity.WebApp/tempkey.rsa
+
+#Ignore images
+/samples/simple/Simple.WebApp/wwwroot/*

@@ -11,7 +11,14 @@ namespace Identity.WebApp
         /// <returns></returns>
         public static IEnumerable<ApiResource> GetApiResources()
         {
-            yield return new ApiResource("api", "Api");
+            yield return new ApiResource("fileserver", "The file server api resource")
+            {
+                Scopes =
+                {
+                    new Scope("fileserver:read"),
+                    new Scope("fileserver:read_write")
+                }
+            };
         }
 
         /// <summary>
@@ -22,6 +29,7 @@ namespace Identity.WebApp
         {
             yield return new Client
             {
+                AllowedGrantTypes = GrantTypes.ClientCredentials,
                 ClientId = "server",
                 ClientSecrets =
                 {
@@ -29,7 +37,8 @@ namespace Identity.WebApp
                 },
                 AllowedScopes =
                 {
-                    "api"
+                    "fileserver:read",
+                    "fileserver:read_write"
                 }
             };
         }

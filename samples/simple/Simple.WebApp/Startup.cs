@@ -26,7 +26,7 @@ namespace CityOs.FileServer.Simple.WebApp
                     options.RequireHttpsMetadata = false;
                 });
 
-            services.AddFileServer(options =>
+            services.AddSimpleFileServer(options =>
             {
                 options.UseFileSystem();
             });
@@ -41,7 +41,7 @@ namespace CityOs.FileServer.Simple.WebApp
         {
             app.UseAuthentication();
 
-            app.UseFileServer2();
+            app.UseSimpleFileServer();
 
             app.UseMvcWithDefaultRoute();
         }

@@ -10,7 +10,7 @@ namespace CityOs.FileServer.Distributed.Mvc.Extensions
         /// </summary>
         /// <param name="services">The services.</param>
         /// <returns></returns>
-        public static IServiceCollection AddFileServer(this IServiceCollection services, Action<IFileServerBuilder> options)
+        public static IServiceCollection AddSimpleFileServer(this IServiceCollection services, Action<IFileServerBuilder> options)
         {
             var fileServerBuilder = new FileServerBuilder(services);
 
