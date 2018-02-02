@@ -11,11 +11,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Data\Rioji.jpg" />
     <None Remove="Data\Rioji.png" />
+    <None Remove="Data\Rioji_thumb.jpg" />
+    <None Remove="Data\Rioji_thumb.png" />
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Data\Rioji.jpg" />
     <EmbeddedResource Include="Data\Rioji.png" />
+    <EmbeddedResource Include="Data\Rioji_thumb.jpg" />
+    <EmbeddedResource Include="Data\Rioji_thumb.png" />
   </ItemGroup>
 
   <ItemGroup>

@@ -16,6 +16,7 @@ namespace CityOs.FileServer.Tests.AppService
     public class ImageAppServiceTests
     {
         public const string FileName = "Rioji.png";
+        public const string JpgFileName = "Rioji.jpg";
 
         /// <summary>
         /// Initializes the class.
@@ -38,8 +39,31 @@ namespace CityOs.FileServer.Tests.AppService
             Assert.IsNotNull(fileInformation);
             Assert.IsTrue(IsImageValid(fileInformation.Stream, 480, 640));
             Assert.AreEqual(fileInformation.OriginalFileName, FileName);
-            Assert.AreEqual(fileInformation.FileType, "image/png");
             Assert.IsNotNull(fileInformation.Stream);
+        }
+
+        [TestMethod]
+        public async Task Should_ReturnPngType_When_QueryPngImage()
+        {
+            var appService = GetDefaultImageAppService();
+            var imageQuery = new ImageQueryDto();
+
+            var fileInformation = await appService.GetStreamByFileNameAsync(FileName, imageQuery);
+
+            Assert.IsNotNull(fileInformation);
+            Assert.AreEqual(fileInformation.FileType, "image/png");
+        }
+
+        [TestMethod]
+        public async Task Should_ReturnJpgType_When_QueryJpgImage()
+        {
+            var appService = GetDefaultImageAppService();
+            var imageQuery = new ImageQueryDto();
+
+            var fileInformation = await appService.GetStreamByFileNameAsync(JpgFileName, imageQuery);
+
+            Assert.IsNotNull(fileInformation);
+            Assert.AreEqual(fileInformation.FileType, "image/jpeg");
         }
 
         [TestMethod]
@@ -56,7 +80,6 @@ namespace CityOs.FileServer.Tests.AppService
             Assert.IsNotNull(fileInformation);
             Assert.IsTrue(IsImageValid(fileInformation.Stream, imageQuery.Height, null));
             Assert.AreEqual(fileInformation.OriginalFileName, FileName);
-            Assert.AreEqual(fileInformation.FileType, "image/png");
             Assert.IsNotNull(fileInformation.Stream);
         }
 
@@ -74,7 +97,6 @@ namespace CityOs.FileServer.Tests.AppService
             Assert.IsNotNull(fileInformation);
             Assert.IsTrue(IsImageValid(fileInformation.Stream, null, imageQuery.Width));
             Assert.AreEqual(fileInformation.OriginalFileName, FileName);
-            Assert.AreEqual(fileInformation.FileType, "image/png");
             Assert.IsNotNull(fileInformation.Stream);
         }
 
@@ -92,7 +114,6 @@ namespace CityOs.FileServer.Tests.AppService
             Assert.IsNotNull(fileInformation);
             Assert.IsTrue(IsImageValid(fileInformation.Stream, null, 640));
             Assert.AreEqual(fileInformation.OriginalFileName, FileName);
-            Assert.AreEqual(fileInformation.FileType, "image/png");
             Assert.IsNotNull(fileInformation.Stream);
         }
 
@@ -110,7 +131,6 @@ namespace CityOs.FileServer.Tests.AppService
             Assert.IsNotNull(fileInformation);
             Assert.IsTrue(IsImageValid(fileInformation.Stream, 480, null));
             Assert.AreEqual(fileInformation.OriginalFileName, FileName);
-            Assert.AreEqual(fileInformation.FileType, "image/png");
             Assert.IsNotNull(fileInformation.Stream);
         }
 
@@ -131,7 +151,6 @@ namespace CityOs.FileServer.Tests.AppService
             Assert.IsTrue(mockDomainService.ThumbnailUsed);
             Assert.IsTrue(IsImageValid(fileInformation.Stream, 20, null));
             Assert.AreEqual(fileInformation.OriginalFileName, FileName);
-            Assert.AreEqual(fileInformation.FileType, "image/png");
             Assert.IsNotNull(fileInformation.Stream);
         }
 
