@@ -2,5 +2,3 @@ language: csharp
 solution: FileServer.sln
 mono: none
 dotnet: 2.0.0
-install:
-- nuget sources Add -Name "ImageSharp" -Source https://www.myget.org/F/imagesharp/api/v3/index.json
