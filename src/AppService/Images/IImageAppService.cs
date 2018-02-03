@@ -18,7 +18,7 @@ namespace CityOs.FileServer.AppService
         /// <param name="fileName">The file name</param>
         /// <param name="imageQuery">The image query</param>
         /// <returns></returns>
-        Task<FileInformationDto> GetStreamByFileNameAsync(string fileName, ImageQueryDto imageQuery);
+        Task<FileInformationDto> GetFileInfoByNameAsync(string fileName, ImageQueryDto imageQuery);
         
         /// <summary>
         /// Save a file asynchronously

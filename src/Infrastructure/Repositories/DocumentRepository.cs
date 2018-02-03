@@ -4,6 +4,7 @@ using CityOs.FileServer.Crosscutting.Helpers;
 using CityOs.FileServer.Domain.Contracts;
 using CityOs.FileServer.Domain.Entities;
 using CityOs.FileServer.Provider.Core;
+using MimeMapping;
 
 namespace CityOs.FileServer.Infrastructure.Repositories
 {
@@ -30,9 +31,13 @@ namespace CityOs.FileServer.Infrastructure.Repositories
         }
 
         /// <inheritdoc />
-        public Task<Stream> GetFileStreamByIdentifierAsync(string fileIdentifier)
+        public async Task<FileInformation> GetDocumentByNameAsync(string fileName)
         {
-            return _fileServerProvider.GetFileByIdentifierAsync(fileIdentifier);
+            var extension = Path.GetExtension(fileName);
+
+            var stream = await _fileServerProvider.GetFileByIdentifierAsync(fileName);
+
+            return new FileInformation(stream, fileName, MimeUtility.GetMimeMapping(extension));
         }
 
         /// <inheritdoc />

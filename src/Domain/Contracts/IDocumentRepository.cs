@@ -1,5 +1,4 @@
 ﻿using CityOs.FileServer.Domain.Entities;
-using System.IO;
 using System.Threading.Tasks;
 
 namespace CityOs.FileServer.Domain.Contracts
@@ -9,9 +8,9 @@ namespace CityOs.FileServer.Domain.Contracts
         /// <summary>
         /// Gets the file stream function of its identifier
         /// </summary>
-        /// <param name="fileIdentifier">The file identifier</param>
+        /// <param name="fileName">The file name</param>
         /// <returns></returns>
-        Task<Stream> GetFileStreamByIdentifierAsync(string fileIdentifier);
+        Task<FileInformation> GetDocumentByNameAsync(string fileName);
 
         /// <summary>
         /// Save the image asynchronously

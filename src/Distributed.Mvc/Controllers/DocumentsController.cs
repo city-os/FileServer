@@ -24,14 +24,14 @@ namespace CityOs.FileServer.Distributed.Mvc.Controllers
         }
 
         [Authorize("ReadDocument")]
-        [HttpGet("images/{imageName}")]
-        public async Task<IActionResult> GetImageByIdentifierAsync(string imageName)
+        [HttpGet("{fileName}")]
+        public async Task<IActionResult> GetDocumentByNameAsync(string fileName)
         {
-            var stream = await _documentAppService.GetImageStreamByIdentifierAsync(imageName);
+            var fileInformation = await _documentAppService.GetFileInfoByNameAsync(fileName);
 
-            if (stream == null) return NotFound();
+            if (fileInformation == null) return NotFound();
 
-            return File(stream, "image/jpeg");
+            return File(fileInformation.Stream, fileInformation.FileType);
         }
 
         [Authorize("WriteDocument")]

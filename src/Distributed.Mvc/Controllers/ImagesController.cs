@@ -27,7 +27,7 @@ namespace CityOs.FileServer.Distributed.Mvc.Controllers
         [HttpGet("{fileName}")]
         public async Task<IActionResult> GetImageByNameAsync(string fileName, [FromQuery] ImageQueryDto imageQuery)
         {
-            var fileInformation = await _imageAppService.GetStreamByFileNameAsync(fileName, imageQuery);
+            var fileInformation = await _imageAppService.GetFileInfoByNameAsync(fileName, imageQuery);
             
             if (fileInformation == null) return NotFound();
 

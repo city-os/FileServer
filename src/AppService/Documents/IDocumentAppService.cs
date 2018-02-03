@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using CityOs.FileServer.Dto;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace CityOs.FileServer.AppService
@@ -10,7 +11,7 @@ namespace CityOs.FileServer.AppService
         /// </summary>
         /// <param name="imageName">The image identifier</param>
         /// <returns></returns>
-        Task<Stream> GetImageStreamByIdentifierAsync(string imageName);
+        Task<FileInformationDto> GetFileInfoByNameAsync(string imageName);
 
         /// <summary>
         /// Save an image asynchronously

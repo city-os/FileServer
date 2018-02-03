@@ -29,7 +29,7 @@ namespace CityOs.FileServer.AppService
         }
 
         /// <inheritdoc />
-        public async Task<FileInformationDto> GetStreamByFileNameAsync(string fileName, ImageQueryDto imageQueryDto)
+        public async Task<FileInformationDto> GetFileInfoByNameAsync(string fileName, ImageQueryDto imageQueryDto)
         {
             var imageQuery = Mapper.Map<ImageQuery>(imageQueryDto);
 

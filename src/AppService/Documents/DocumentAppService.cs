@@ -1,6 +1,8 @@
-﻿using CityOs.FileServer.Domain.Contracts;
+﻿using AutoMapper;
+using CityOs.FileServer.Domain.Contracts;
 using CityOs.FileServer.Domain.Entities;
 using CityOs.FileServer.Domain.Services;
+using CityOs.FileServer.Dto;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -35,9 +37,13 @@ namespace CityOs.FileServer.AppService
         }
 
         /// <inheritdoc />
-        public Task<Stream> GetImageStreamByIdentifierAsync(string imageName)
+        public async Task<FileInformationDto> GetFileInfoByNameAsync(string imageName)
         {
-            return _documentRepository.GetFileStreamByIdentifierAsync(imageName);
+            var fileInformation = await _documentRepository.GetDocumentByNameAsync(imageName);
+
+            var fileInformationDto = Mapper.Map<FileInformationDto>(fileInformation);
+
+            return fileInformationDto;
         }
 
         /// <inheritdoc />

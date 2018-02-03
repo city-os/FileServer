@@ -36,7 +36,7 @@ namespace CityOs.FileServer.Tests.AppService
             var appService = GetDefaultImageAppService();
             var imageQuery = new ImageQueryDto();
 
-            var fileInformation = await appService.GetStreamByFileNameAsync(FileName, imageQuery);
+            var fileInformation = await appService.GetFileInfoByNameAsync(FileName, imageQuery);
 
             Assert.IsNotNull(fileInformation);
             Assert.IsTrue(IsImageValid(fileInformation.Stream, 480, 640));
@@ -50,7 +50,7 @@ namespace CityOs.FileServer.Tests.AppService
             var appService = GetDefaultImageAppService();
             var imageQuery = new ImageQueryDto();
 
-            var fileInformation = await appService.GetStreamByFileNameAsync(FileName, imageQuery);
+            var fileInformation = await appService.GetFileInfoByNameAsync(FileName, imageQuery);
 
             Assert.IsNotNull(fileInformation);
             Assert.AreEqual(fileInformation.FileType, "image/png");
@@ -62,7 +62,7 @@ namespace CityOs.FileServer.Tests.AppService
             var appService = GetDefaultImageAppService();
             var imageQuery = new ImageQueryDto();
 
-            var fileInformation = await appService.GetStreamByFileNameAsync(JpgFileName, imageQuery);
+            var fileInformation = await appService.GetFileInfoByNameAsync(JpgFileName, imageQuery);
 
             Assert.IsNotNull(fileInformation);
             Assert.AreEqual(fileInformation.FileType, "image/jpeg");
@@ -77,7 +77,7 @@ namespace CityOs.FileServer.Tests.AppService
             imageQuery.Width = 0;
             imageQuery.Height = 20;
 
-            var fileInformation = await appService.GetStreamByFileNameAsync(FileName, imageQuery);
+            var fileInformation = await appService.GetFileInfoByNameAsync(FileName, imageQuery);
 
             Assert.IsNotNull(fileInformation);
             Assert.IsTrue(IsImageValid(fileInformation.Stream, imageQuery.Height, null));
@@ -94,7 +94,7 @@ namespace CityOs.FileServer.Tests.AppService
             imageQuery.Width = 300;
             imageQuery.Height = 0;
 
-            var fileInformation = await appService.GetStreamByFileNameAsync(FileName, imageQuery);
+            var fileInformation = await appService.GetFileInfoByNameAsync(FileName, imageQuery);
                         
             Assert.IsNotNull(fileInformation);
             Assert.IsTrue(IsImageValid(fileInformation.Stream, null, imageQuery.Width));
@@ -111,7 +111,7 @@ namespace CityOs.FileServer.Tests.AppService
             imageQuery.Width = 6000;
             imageQuery.Height = 0;
 
-            var fileInformation = await appService.GetStreamByFileNameAsync(FileName, imageQuery);
+            var fileInformation = await appService.GetFileInfoByNameAsync(FileName, imageQuery);
 
             Assert.IsNotNull(fileInformation);
             Assert.IsTrue(IsImageValid(fileInformation.Stream, null, 640));
@@ -128,7 +128,7 @@ namespace CityOs.FileServer.Tests.AppService
             imageQuery.Height = 80000;
             imageQuery.Width = 0;
 
-            var fileInformation = await appService.GetStreamByFileNameAsync(FileName, imageQuery);
+            var fileInformation = await appService.GetFileInfoByNameAsync(FileName, imageQuery);
 
             Assert.IsNotNull(fileInformation);
             Assert.IsTrue(IsImageValid(fileInformation.Stream, 480, null));
@@ -147,7 +147,7 @@ namespace CityOs.FileServer.Tests.AppService
             imageQuery.Height = 20;
             imageQuery.Width = 0;
 
-            var fileInformation = await appService.GetStreamByFileNameAsync(FileName, imageQuery);
+            var fileInformation = await appService.GetFileInfoByNameAsync(FileName, imageQuery);
 
             Assert.IsNotNull(fileInformation);
             Assert.IsTrue(mockDomainService.ThumbnailUsed);
@@ -167,7 +167,7 @@ namespace CityOs.FileServer.Tests.AppService
             imageQuery.Height = 20000;
             imageQuery.Width = 0;
 
-            var fileInformation = await appService.GetStreamByFileNameAsync(FileName, imageQuery);
+            var fileInformation = await appService.GetFileInfoByNameAsync(FileName, imageQuery);
             
             Assert.IsFalse(mockDomainService.ThumbnailUsed);
         }
@@ -179,7 +179,7 @@ namespace CityOs.FileServer.Tests.AppService
 
             var appService = GetDefaultImageAppService();
 
-            var fileInformation = await appService.GetStreamByFileNameAsync(fileName, GetDefaultImageQueryDto());
+            var fileInformation = await appService.GetFileInfoByNameAsync(fileName, GetDefaultImageQueryDto());
 
             Assert.IsNull(fileInformation);
         }
