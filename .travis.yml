@@ -6,4 +6,4 @@ install:
   - dotnet restore --configfile $TRAVIS_BUILD_DIR/.nuget/NuGet.Config
 script:
   - dotnet build
-  - dotnet test
+  - dotnet test $TRAVIS_BUILD_DIR/tests/FileServer/FileServer.Tests.csproj
