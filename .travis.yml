@@ -3,6 +3,6 @@ solution: FileServer.sln
 mono: none
 dotnet: 2.0.0
 install:
-  - dotnet restore --configfile .nuget/NuGet.Config
+  - dotnet restore --configfile $TRAVIS_BUILD_DIR/.nuget/NuGet.Config
 script:
   - dotnet build
