@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Threading.Tasks;
 using CityOs.FileServer.Crosscutting.Helpers;
 using CityOs.FileServer.Domain.Contracts;
@@ -43,7 +42,7 @@ namespace CityOs.FileServer.Infrastructure.Repositories
             string fileExtension = Path.GetExtension(fileInformation.OriginalFileName);
 
             var newFileName = uniqueFileName + fileExtension;
-            var newThumbFileName = uniqueFileName + "_thumb" + fileExtension;
+            var newThumbFileName = _imageDomainService.GetFileThumbnailName(newFileName);
 
             using (fileInformation.Stream)
             {
@@ -53,6 +52,26 @@ namespace CityOs.FileServer.Infrastructure.Repositories
             }
 
             return string.Empty;
+        }
+
+        /// <inheritdoc />
+        public async Task<FileInformation> GetImageByNameAsync(string fileName, ImageQuery imageQuery)
+        {
+            var fileNameToUse = await GetFileNameToUse(fileName, imageQuery);
+
+            if (fileNameToUse == null) return null;
+
+            using (var fileStream = await _fileServerProvider.GetFileByIdentifierAsync(fileNameToUse))
+            using (var image = Image.Load(fileStream))
+            {
+                IImageFormat format = Image.DetectFormat(fileStream);
+
+                var stream = GetResizeStream(image, format, imageQuery);
+
+                var extension = Path.GetExtension(fileName);
+
+                return new FileInformation(stream, fileName, MimeUtility.GetMimeMapping(extension));
+            }
         }
 
         /// <summary>
@@ -67,27 +86,17 @@ namespace CityOs.FileServer.Infrastructure.Repositories
 
             using (var image = Image.Load(stream))
             {
-                if (image.Height > 1000 || image.Width > 1000)
+                var shouldSaveThumbnail = _imageDomainService.GenerateThumbnail(image.Height, image.Width);
+
+                if (!shouldSaveThumbnail) return;
+
+                IImageFormat format = Image.DetectFormat(stream);
+
+                var thumbnailDefaultSize = _imageDomainService.GetDefaultThumbnailSize();
+
+                using (var resizeStream = GetResizeStream(image, format, thumbnailDefaultSize))
                 {
-                    
-                       var resizeOptions = new ResizeOptions
-                    {
-                        Mode = ResizeMode.Max,
-                        Size = new SixLabors.Primitives.Size(1000, 1000)
-                    };
-
-                    image.Resize(resizeOptions);
-
-                    using (var memoryStream = new MemoryStream())
-                    {
-                        var extension = Path.GetExtension(newThumbFileName);
-
-                        IImageFormat format = Image.DetectFormat(stream);
-
-                        image.Save(memoryStream, format);
-
-                        await SaveStreamToFileAsync(memoryStream, newThumbFileName);
-                    }
+                    await SaveStreamToFileAsync(resizeStream, newThumbFileName);
                 }
             }
         }
@@ -103,27 +112,7 @@ namespace CityOs.FileServer.Infrastructure.Repositories
 
             await _fileServerProvider.WriteFileAsync(stream, fileName);
         }
-
-        /// <inheritdoc />
-        public async Task<FileInformation> GetImageByNameAsync(string fileName, ImageQuery imageQuery)
-        {
-            var fileNameToUse = await GetFileNameToUse(fileName, imageQuery);
-
-            if (fileNameToUse == null) return null;
-            
-            using (var fileStream = await _fileServerProvider.GetFileByIdentifierAsync(fileNameToUse))
-            using (var image = Image.Load(fileStream))
-            {
-                IImageFormat format = Image.DetectFormat(fileStream);
-
-                var stream = GetResizeStream(image, format, imageQuery);
-                
-                var extension = Path.GetExtension(fileName);
-                
-                return new FileInformation(stream, fileName, MimeUtility.GetMimeMapping(extension));
-            }
-        }
-
+        
         /// <summary>
         /// Gets the resized image stream
         /// </summary>
@@ -134,7 +123,7 @@ namespace CityOs.FileServer.Infrastructure.Repositories
         private Stream GetResizeStream(Image<Rgba32> image, IImageFormat format, ImageQuery imageQuery)
         {
             var memoryStream = new MemoryStream();
-            
+
             var shouldResize = _imageDomainService.ShouldResize(imageQuery, image.Height, image.Width);
 
             if (shouldResize)

@@ -9,6 +9,8 @@ namespace CityOs.FileServer.Tests.Mocks
 
         public bool ThumbnailUsed { get; private set; }
 
+        public bool ThumbnailGenerated { get; private set; }
+
         public MockImageDomainService()
         {
             _imageDomainService = new ImageDomainService();
@@ -38,6 +40,19 @@ namespace CityOs.FileServer.Tests.Mocks
             ThumbnailUsed = useThumbnail;
 
             return useThumbnail;
+        }
+
+        public bool GenerateThumbnail(int height, int width)
+        {
+            var generateThumbnail = _imageDomainService.GenerateThumbnail(height, width);
+            ThumbnailGenerated = generateThumbnail;
+
+            return generateThumbnail;
+        }
+
+        public ImageQuery GetDefaultThumbnailSize()
+        {
+            return _imageDomainService.GetDefaultThumbnailSize();
         }
     }
 }

@@ -15,6 +15,7 @@
     <None Remove="Data\Rioji.png" />
     <None Remove="Data\Rioji_thumb.jpg" />
     <None Remove="Data\Rioji_thumb.png" />
+    <None Remove="Data\Space_large.jpeg" />
   </ItemGroup>
 
   <ItemGroup>
@@ -22,6 +23,7 @@
     <EmbeddedResource Include="Data\Rioji.png" />
     <EmbeddedResource Include="Data\Rioji_thumb.jpg" />
     <EmbeddedResource Include="Data\Rioji_thumb.png" />
+    <EmbeddedResource Include="Data\Space_large.jpeg" />
   </ItemGroup>
 
   <ItemGroup>

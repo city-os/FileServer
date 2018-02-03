@@ -5,6 +5,17 @@ namespace CityOs.FileServer.Domain.Services
 {
     public class ImageDomainService : IImageDomainService
     {
+        /// <summary>
+        /// The default thumbnail size
+        /// </summary>
+        private readonly ImageQuery ThumbnailDefaultSize = new ImageQuery { Height = 1080, Width = 1920 };
+
+        /// <inheritdoc />
+        public ImageQuery GetDefaultThumbnailSize()
+        {
+            return ThumbnailDefaultSize;
+        }
+
         /// <inheritdoc />
         public string GetFileThumbnailName(string fileName)
         {
@@ -32,6 +43,17 @@ namespace CityOs.FileServer.Domain.Services
         }
 
         /// <inheritdoc />
+        public bool GenerateThumbnail(int height, int width)
+        {
+            if (IsFullHd(width, height))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <inheritdoc />
         public bool UseThumbnail(int height, int width)
         {
             return UseThumbnail(new ImageQuery
@@ -49,12 +71,12 @@ namespace CityOs.FileServer.Domain.Services
         /// <returns></returns>
         private bool IsFullHd(int firstSide, int secondSide)
         {
-            if(firstSide > 1920 || secondSide > 1080)
+            if (firstSide > ThumbnailDefaultSize.Width || secondSide > ThumbnailDefaultSize.Height)
             {
                 return true;
             }
 
-            if(firstSide > 1080 || secondSide > 1920)
+            if (ThumbnailDefaultSize.Height > 1080 || secondSide > ThumbnailDefaultSize.Width)
             {
                 return true;
             }
@@ -81,6 +103,11 @@ namespace CityOs.FileServer.Domain.Services
         bool UseThumbnail(int height, int width);
 
         /// <summary>
+        /// Define if we need to generate a thumbnail for this image
+        /// </summary>
+        bool GenerateThumbnail(int height, int width);
+
+        /// <summary>
         /// Gets the file thumbnail name
         /// </summary>
         /// <param name="fileName">The file name (with extension)</param>
@@ -93,5 +120,11 @@ namespace CityOs.FileServer.Domain.Services
         /// <param name="imageQuery">The image query</param>
         /// <returns></returns>
         bool ShouldResize(ImageQuery imageQuery, int maxHeight, int maxWidth);
+
+        /// <summary>
+        /// Gets the default thumbnail size
+        /// </summary>
+        /// <returns></returns>
+        ImageQuery GetDefaultThumbnailSize();
     }
 }

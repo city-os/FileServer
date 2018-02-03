@@ -4,6 +4,7 @@ using CityOs.FileServer.AppService.Adapters;
 using CityOs.FileServer.Domain.Services;
 using CityOs.FileServer.Dto;
 using CityOs.FileServer.Infrastructure.Repositories;
+using CityOs.FileServer.Tests.Helpers;
 using CityOs.FileServer.Tests.Mocks;
 using ImageSharp;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -180,6 +181,42 @@ namespace CityOs.FileServer.Tests.AppService
             var fileInformation = await appService.GetStreamByFileNameAsync(fileName, GetDefaultImageQueryDto());
 
             Assert.IsNull(fileInformation);
+        }
+
+        [TestMethod]
+        public async Task Should_GenerateThumbnail_When_ImageTooLarge()
+        {
+            var mockDomainService = new MockImageDomainService();
+            var appService = GetDefaultImageAppService(mockDomainService);
+
+            var fileStream = FileHelper.GetEmbeddedStream("Space_large.jpeg");
+
+            var savedImage = await appService.SaveImageAsync(new FileInformationDto
+            {
+                FileType = "image/jpeg",
+                OriginalFileName = "Space_large.jpeg",
+                Stream = fileStream
+            });
+
+            Assert.IsTrue(mockDomainService.ThumbnailGenerated);
+        }
+
+        [TestMethod]
+        public async Task Should_NotGenerateThumbnail_When_ImageTooSmall()
+        {
+            var mockDomainService = new MockImageDomainService();
+            var appService = GetDefaultImageAppService(mockDomainService);
+
+            var fileStream = FileHelper.GetEmbeddedStream(FileName);
+
+            var savedImage = await appService.SaveImageAsync(new FileInformationDto
+            {
+                FileType = "image/jpeg",
+                OriginalFileName = "Rioji.jpg",
+                Stream = fileStream
+            });
+
+            Assert.IsFalse(mockDomainService.ThumbnailGenerated);
         }
 
         /// <summary>

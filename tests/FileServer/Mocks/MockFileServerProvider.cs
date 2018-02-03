@@ -1,7 +1,7 @@
 ﻿using System.IO;
-using System.Reflection;
 using System.Threading.Tasks;
 using CityOs.FileServer.Provider.Core;
+using CityOs.FileServer.Tests.Helpers;
 
 namespace CityOs.FileServer.Tests.Mocks
 {
@@ -9,7 +9,7 @@ namespace CityOs.FileServer.Tests.Mocks
     {
         public Task DeleteFileAsync(string fileName)
         {
-            throw new System.NotImplementedException();
+            return Task.CompletedTask;
         }
 
         public Task<bool> FileExists(string fileName)
@@ -32,17 +32,12 @@ namespace CityOs.FileServer.Tests.Mocks
 
         public Task WriteFileAsync(Stream fileStream, string fileName)
         {
-            throw new System.NotImplementedException();
+            return Task.CompletedTask;
         }
 
         private Stream GetEmbeddedFileStream(string fileName)
         {
-            var executingAssembly = Assembly.GetExecutingAssembly();
-            var resource = string.Format("CityOs.FileServer.Tests.Data.{0}", fileName);
-
-            var stream = executingAssembly.GetManifestResourceStream(resource);
-            
-            return stream;
+            return FileHelper.GetEmbeddedStream(fileName);
         }
     }
 }
