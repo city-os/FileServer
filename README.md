@@ -1,5 +1,7 @@
 # Simple File Server
 
+**This project is actually not production ready**
+
 This project aims to give the ability to run a simple file server who manage documents and images.
 
 ## Getting Started
