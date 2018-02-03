@@ -1,2 +1,4 @@
 language: csharp
 solution: FileServer.sln
+install:
+- nuget sources Add -Name "ImageSharp" -Source https://www.myget.org/F/imagesharp/api/v3/index.json
