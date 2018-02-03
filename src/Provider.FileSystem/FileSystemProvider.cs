@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Threading.Tasks;
+using ChinhDo.Transactions;
 using CityOs.FileServer.Provider.Core;
 
 namespace CityOs.FileServer.Provider.FileSystem
@@ -12,12 +13,19 @@ namespace CityOs.FileServer.Provider.FileSystem
         private readonly string _baseFolder;
 
         /// <summary>
+        /// The transactional file manager
+        /// </summary>
+        private readonly TxFileManager _transactionFileManager;
+
+        /// <summary>
         /// Initialize a default <see cref="FileSystemProvider"/>
         /// </summary>
         /// <param name="baseFolder">The base folder</param>
         public FileSystemProvider(string baseFolder)
         {
             _baseFolder = baseFolder;
+
+            _transactionFileManager = new TxFileManager();
         }
 
         /// <inheritdoc />
@@ -27,7 +35,7 @@ namespace CityOs.FileServer.Provider.FileSystem
 
             if (File.Exists(filePath))
             {
-                File.Delete(filePath);
+                _transactionFileManager.Delete(filePath);
             }
 
             return Task.CompletedTask;

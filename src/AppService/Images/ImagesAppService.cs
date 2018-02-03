@@ -23,6 +23,12 @@ namespace CityOs.FileServer.AppService
         }
 
         /// <inheritdoc />
+        public Task DeleteImageAsync(string fileName)
+        {
+            return _imageRepository.DeleteImageAsync(fileName);
+        }
+
+        /// <inheritdoc />
         public async Task<FileInformationDto> GetStreamByFileNameAsync(string fileName, ImageQueryDto imageQueryDto)
         {
             var imageQuery = Mapper.Map<ImageQuery>(imageQueryDto);
@@ -47,6 +53,13 @@ namespace CityOs.FileServer.AppService
 
     public interface IImageAppService
     {
+        /// <summary>
+        /// Delete an image asynchronously
+        /// </summary>
+        /// <param name="fileName">The filename to delete</param>
+        /// <returns></returns>
+        Task DeleteImageAsync(string fileName);
+
         /// <summary>
         /// Gets stream function of a file name async
         /// </summary>

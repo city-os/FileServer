@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Threading.Tasks;
+using System.Transactions;
 using CityOs.FileServer.Crosscutting.Helpers;
 using CityOs.FileServer.Domain.Contracts;
 using CityOs.FileServer.Domain.Entities;
@@ -52,6 +53,25 @@ namespace CityOs.FileServer.Infrastructure.Repositories
             }
 
             return string.Empty;
+        }
+
+        /// <inheritdoc />
+        public async Task DeleteImageAsync(string fileName)
+        {
+            var thumbnailFileName = _imageDomainService.GetFileThumbnailName(fileName);
+            var thumbnailExists = await _fileServerProvider.FileExists(thumbnailFileName);
+
+            using(var transactionScope = new TransactionScope())
+            {
+                await _fileServerProvider.DeleteFileAsync(fileName);
+
+                if (thumbnailExists)
+                {
+                    await _fileServerProvider.DeleteFileAsync(thumbnailFileName);
+                }
+
+                transactionScope.Complete();
+            }
         }
 
         /// <inheritdoc />

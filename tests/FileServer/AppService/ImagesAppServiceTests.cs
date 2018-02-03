@@ -4,6 +4,7 @@ using CityOs.FileServer.AppService.Adapters;
 using CityOs.FileServer.Domain.Services;
 using CityOs.FileServer.Dto;
 using CityOs.FileServer.Infrastructure.Repositories;
+using CityOs.FileServer.Provider.Core;
 using CityOs.FileServer.Tests.Helpers;
 using CityOs.FileServer.Tests.Mocks;
 using ImageSharp;
@@ -219,13 +220,37 @@ namespace CityOs.FileServer.Tests.AppService
             Assert.IsFalse(mockDomainService.ThumbnailGenerated);
         }
 
+        [TestMethod]
+        public async Task Should_DeleteOriginalFile_When_FileExists()
+        {
+            var mockFileProvider = new MockFileServerProvider();
+            var appService = GetDefaultImageAppService(mockFileServerProvider: mockFileProvider);
+
+            await appService.DeleteImageAsync("Space_large.jpeg");
+
+            Assert.IsTrue(mockFileProvider.DeleteFiles.Contains("Space_large.jpeg"));
+            Assert.IsTrue(mockFileProvider.DeleteFiles.Count == 1);
+        }
+
+        [TestMethod]
+        public async Task Should_DeleteOriginalFileWithThumbnail_When_ThumbnailAndFileExists()
+        {
+            var mockFileProvider = new MockFileServerProvider();
+            var appService = GetDefaultImageAppService(mockFileServerProvider: mockFileProvider);
+
+            await appService.DeleteImageAsync("Rioji.jpg");
+
+            Assert.IsTrue(mockFileProvider.DeleteFiles.Contains("Rioji.jpg"));
+            Assert.IsTrue(mockFileProvider.DeleteFiles.Count == 2);
+        }
+
         /// <summary>
         /// Get a default <see cref="ImageAppService"/>
         /// </summary>
         /// <returns></returns>
-        private ImageAppService GetDefaultImageAppService(IImageDomainService mockImageDomainService = null)
+        private ImageAppService GetDefaultImageAppService(IImageDomainService mockImageDomainService = null, IFileServerProvider mockFileServerProvider = null)
         {
-            var fileServerProvider = new MockFileServerProvider();
+            var fileServerProvider = mockFileServerProvider ?? new MockFileServerProvider();
             var imageDomainService = mockImageDomainService ?? new ImageDomainService();
             var repository = new ImageRepository(fileServerProvider, imageDomainService);
             var appService = new ImageAppService(repository, Mapper.Instance);

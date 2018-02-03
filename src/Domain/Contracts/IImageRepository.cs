@@ -19,5 +19,12 @@ namespace CityOs.FileServer.Domain.Contracts
         /// <param name="fileName">The file name to retrieve</param>
         /// <returns></returns>
         Task<FileInformation> GetImageByNameAsync(string fileName, ImageQuery imageQuery);
+
+        /// <summary>
+        /// Delete an image asynchronously
+        /// </summary>
+        /// <param name="fileName">The file name</param>
+        /// <returns></returns>
+        Task DeleteImageAsync(string fileName);
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using CityOs.FileServer.Provider.Core;
 using CityOs.FileServer.Tests.Helpers;
@@ -7,8 +8,12 @@ namespace CityOs.FileServer.Tests.Mocks
 {
     internal class MockFileServerProvider : IFileServerProvider
     {
+        public List<string> DeleteFiles { get; private set; } = new List<string>();
+
         public Task DeleteFileAsync(string fileName)
         {
+            DeleteFiles.Add(fileName);
+
             return Task.CompletedTask;
         }
 
