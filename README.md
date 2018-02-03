@@ -1,12 +1,12 @@
 # Simple File Server
 
-## **This project is actually not production ready**
+## ======= **_This project is actually not production ready_** =======
+
+This project aims to give the ability to run a simple file server who manage documents and images.
 
 ## Build status
 
 ![Develop](https://travis-ci.org/city-os/FileServer.svg?branch=develop)
-
-This project aims to give the ability to run a simple file server who manage documents and images.
 
 ## Getting Started
 
