@@ -12,7 +12,7 @@ build_script:
   - ps: dotnet build
 
 after_build:
-  - ps: dotnet pack /p:PackageVersion=%GitVersion_NuGetVersion%
+  - ps: dotnet pack /p:PackageVersion=env:GitVersion_NuGetVersion
 #   - cmd: nuget pack <Project>\<NuSpec>.nuspec -version "%GitVersion_NuGetVersion%" -prop "target=%CONFIGURATION%"
 #   - cmd: appveyor PushArtifact "<NuSpec>.%GitVersion_NuGetVersion%.nupkg"
 
