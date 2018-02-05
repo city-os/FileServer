@@ -5,7 +5,7 @@ assembly_info:
   patch: false
 
 before_build:
-  - dotnet restore --configfile $APPVEYOR_BUILD_FOLDER/.nuget/NuGet.Config
+  - dotnet restore --configfile .nuget/NuGet.Config
   - ps: gitversion /l console /output buildserver /updateAssemblyInfo
 
 build:
