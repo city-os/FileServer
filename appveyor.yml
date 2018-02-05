@@ -1,10 +1,6 @@
 install:
   - choco install gitversion.portable -pre -y
 
-dotnet_csproj:
-  patch: true
-  file: '**\*.csproj'
-
 assembly_info:
   patch: false
 
@@ -12,8 +8,8 @@ before_build:
   - dotnet restore --configfile .nuget/NuGet.Config
   - ps: gitversion /l console /output buildserver /updateAssemblyInfo
 
-build:
-  project: FileServer.sln
+build_script:
+  - ps: dotnet build
 
 # after_build:
 #   - cmd: ECHO nuget pack <Project>\<NuSpec>.nuspec -version "%GitVersion_NuGetVersion%" -prop "target=%CONFIGURATION%"
