@@ -19,6 +19,6 @@ after_build:
 test_script:
   - ps: dotnet test tests/FileServer/FileServer.Tests.csproj
 
-  artifacts:
+artifacts:
   - path: '*.nupkg'
     name: FileServer
