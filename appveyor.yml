@@ -17,4 +17,4 @@ build_script:
 #   - cmd: appveyor PushArtifact "<NuSpec>.%GitVersion_NuGetVersion%.nupkg"
 
 test_script:
-  - ps: dotnet test tests/FileServer/FileServer.Tests.csproj
+  - ps: dotnet test --logger Appveyor tests/FileServer/FileServer.Tests.csproj
