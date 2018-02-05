@@ -11,10 +11,14 @@ before_build:
 build_script:
   - ps: dotnet build
 
-# after_build:
-#   - cmd: ECHO nuget pack <Project>\<NuSpec>.nuspec -version "%GitVersion_NuGetVersion%" -prop "target=%CONFIGURATION%"
+after_build:
+  - ps: dotnet pack /p:PackageVersion=%GitVersion_NuGetVersion%
 #   - cmd: nuget pack <Project>\<NuSpec>.nuspec -version "%GitVersion_NuGetVersion%" -prop "target=%CONFIGURATION%"
 #   - cmd: appveyor PushArtifact "<NuSpec>.%GitVersion_NuGetVersion%.nupkg"
 
 test_script:
-  - ps: dotnet test --logger Appveyor tests/FileServer/FileServer.Tests.csproj
+  - ps: dotnet test tests/FileServer/FileServer.Tests.csproj
+
+  artifacts:
+  - path: '*.nupkg'
+    name: FileServer
