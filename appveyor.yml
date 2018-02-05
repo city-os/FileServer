@@ -12,8 +12,8 @@ build_script:
   - ps: dotnet build --no-restore
 
 after_build:
-  - ps: dotnet pack --no-build --no-restore
-#   - cmd: nuget pack <Project>\<NuSpec>.nuspec -version "%GitVersion_NuGetVersion%" -prop "target=%CONFIGURATION%"
+#   - ps: dotnet pack --no-build --no-restore
+  - cmd: nuget pack .nuget/FileServer.nuspec -version "%GitVersion_NuGetVersion%" -prop "target=%CONFIGURATION%"
 #   - cmd: appveyor PushArtifact "<NuSpec>.%GitVersion_NuGetVersion%.nupkg"
 
 test_script:

@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <metadata>
+        <id>CityOs.FileServer</id>
+        <version>1.0.0</version>
+        <authors>Authfix</authors>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>Library that allows you to create a simple file server. It allows you to save images (with resize support) and documents.</description>
+    </metadata>
+    <files>
+        <file src="..\src\Distributed.Mvc\bin\Release\netstandard2.0\CityOs.FileServer.AppService.dll" target="lib\netstandard2.0\CityOs.FileServer.AppService.dll" />
+        <file src="..\src\Distributed.Mvc\bin\Release\netstandard2.0\CityOs.FileServer.Crosscutting.dll" target="lib\netstandard2.0\CityOs.FileServer.Crosscutting.dll" />
+        <file src="..\src\Distributed.Mvc\bin\Release\netstandard2.0\CityOs.FileServer.Distributed.Mvc.dll" target="lib\netstandard2.0\CityOs.FileServer.Distributed.Mvc.dll" />
+        <file src="..\src\Distributed.Mvc\bin\Release\netstandard2.0\CityOs.FileServer.Domain.dll" target="lib\netstandard2.0\CityOs.FileServer.Domain.dll" />
+        <file src="..\src\Distributed.Mvc\bin\Release\netstandard2.0\CityOs.FileServer.Dto.dll" target="lib\netstandard2.0\CityOs.FileServer.Dto.dll" />
+        <file src="..\src\Distributed.Mvc\bin\Release\netstandard2.0\CityOs.FileServer.Infrastructure.dll" target="lib\netstandard2.0\CityOs.FileServer.Infrastructure.dll" />
+        <file src="..\src\Distributed.Mvc\bin\Release\netstandard2.0\CityOs.FileServer.Provider.Core.dll" target="lib\netstandard2.0\CityOs.FileServer.Provider.Core.dll" />
+    </files>
+</package>
