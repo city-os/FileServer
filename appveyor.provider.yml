@@ -6,10 +6,10 @@ assembly_info:
 
 before_build:
   - dotnet restore --configfile .nuget/NuGet.Config
-  - ps: gitversion /l console /output buildserver /updateAssemblyInfo
+  - ps: gitversion /l console /output buildserver /ensureassemblyinfo /updateAssemblyInfo
 
 build_script:
-  - ps: dotnet build --configuration release --no-restore
+  - ps: dotnet build /p:GenerateAssemblyInfo=false --configuration release --no-restore
 
 after_build:
   - cmd: nuget pack .nuget/FileServer.Provider.FileSystem.nuspec -version "%GitVersion_NuGetVersion%" -prop "target=%CONFIGURATION%"
