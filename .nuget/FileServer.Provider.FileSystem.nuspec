@@ -7,7 +7,7 @@
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>Provider for CityOs.FileServer. This provider use the file system to store documents/images.</description>
         <dependencies>
-            <dependency id="CityOs.FileServer" version="0.1.0" />
+            <dependency id="CityOs.FileServer.Core" version="0.1.0" />
         </dependencies>
     </metadata>
     <files>
