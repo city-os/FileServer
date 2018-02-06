@@ -6,7 +6,10 @@ This project aims to give the ability to run a simple file server who manage doc
 
 ## Build status
 
-![Develop](https://travis-ci.org/city-os/FileServer.svg?branch=develop)
+Component|Build status
+--- | ---
+Core | [![Build status](https://ci.appveyor.com/api/projects/status/0qb358krhx4pyj1v?svg=true)](https://ci.appveyor.com/project/Authfix/fileserver)
+Provider.FileSystem | [![Build status](https://ci.appveyor.com/api/projects/status/l4t0wun3wwe8m83r?svg=true)](https://ci.appveyor.com/project/Authfix/fileserver-n7n72)
 
 ## Getting Started
 

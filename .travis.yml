@@ -1,9 +1,0 @@
-language: csharp
-solution: FileServer.sln
-mono: none
-dotnet: 2.0.0
-install:
-  - dotnet restore --configfile $TRAVIS_BUILD_DIR/.nuget/NuGet.Config
-script:
-  - dotnet build
-  - dotnet test $TRAVIS_BUILD_DIR/tests/FileServer/FileServer.Tests.csproj
