@@ -4,6 +4,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>CityOs.FileServer.Crosscutting</AssemblyName>
     <RootNamespace>CityOs.FileServer.Crosscutting</RootNamespace>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
 
 </Project>

@@ -8,6 +8,7 @@
     <Authors>Authfix</Authors>
     <Company />
     <Product>Simple File Server</Product>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
 
   <ItemGroup>

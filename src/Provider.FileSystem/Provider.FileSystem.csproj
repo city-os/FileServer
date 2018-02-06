@@ -4,6 +4,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>CityOs.FileServer.Provider.FileSystem</AssemblyName>
     <RootNamespace>CityOs.FileServer.Provider.FileSystem</RootNamespace>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
 
   <ItemGroup>
