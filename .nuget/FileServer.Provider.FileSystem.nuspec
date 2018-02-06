@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <metadata>
+        <id>CityOs.FileServer.Provider.FileSystem</id>
+        <version>1.0.0</version>
+        <authors>Authfix</authors>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>Provider for CityOs.FileServer. This provider use the file system to store documents/images.</description>
+        <dependencies>
+            <dependency id="CityOs.FileServer" version="0.1.0" />
+        </dependencies>
+    </metadata>
+    <files>
+        <file src="..\src\Provider.FileSystem\bin\Release\netstandard2.0\CityOs.FileServer.Provider.FileSystem.dll" target="lib\netstandard2.0\CityOs.FileServer.Provider.FileSystem.dll" />
+    </files>
+</package>

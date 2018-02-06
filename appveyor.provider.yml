@@ -12,7 +12,7 @@ build_script:
   - ps: dotnet build --configuration release --no-restore
 
 after_build:
-  - cmd: nuget pack .nuget/FileServer.nuspec -version "%GitVersion_NuGetVersion%" -prop "target=%CONFIGURATION%"
+  - cmd: nuget pack .nuget/FileServer.Provider.FileSystem.nuspec -version "%GitVersion_NuGetVersion%" -prop "target=%CONFIGURATION%"
 
 test_script:
   - ps: dotnet test tests/FileServer/FileServer.Tests.csproj --configuration release
@@ -21,6 +21,7 @@ artifacts:
   - path: '*.nupkg'
     name: FileServer
 
-skip_commits:
+only_commits:
   files:
-    - src/Provider.FileSystem/
+    - src\Provider.Core\
+    - src\Provider.FileSystem\
