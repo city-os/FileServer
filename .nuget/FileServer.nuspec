@@ -4,6 +4,8 @@
         <id>CityOs.FileServer.Core</id>
         <version>1.0.0</version>
         <authors>Authfix</authors>
+        <licenseUrl>https://github.com/city-os/FileServer/blob/develop/LICENSE.md</licenseUrl>
+        <projectUrl>https://github.com/city-os/FileServer</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>Library that allows you to create a simple file server. It allows you to save images (with resize support) and documents.</description>
     </metadata>
