@@ -22,12 +22,11 @@ deploy:
     api_key:
       secure: zUakA949gQ5ovWuZHvhM85xal8KIt+3UJ1Bg2xzdHy+gPACiYbxcxOVPFMcx5HiI
     skip_symbols: true
-    
+
 artifacts:
   - path: '*.nupkg'
     name: FileServer
 
 only_commits:
   files:
-    - src\Provider.Core\
     - src\Provider.FileSystem\
