@@ -4,6 +4,8 @@
         <id>CityOs.FileServer.Provider.FileSystem</id>
         <version>1.0.0</version>
         <authors>Authfix</authors>
+        <licenseUrl>https://github.com/city-os/FileServer/blob/develop/LICENSE.md</licenseUrl>
+        <projectUrl>https://github.com/city-os/FileServer</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>Provider for CityOs.FileServer. This provider use the file system to store documents/images.</description>
         <dependencies>

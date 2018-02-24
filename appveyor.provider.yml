@@ -17,6 +17,12 @@ after_build:
 test_script:
   - ps: dotnet test tests/FileServer/FileServer.Tests.csproj --configuration release
 
+deploy:
+  - provider: NuGet
+    api_key:
+      secure: zUakA949gQ5ovWuZHvhM85xal8KIt+3UJ1Bg2xzdHy+gPACiYbxcxOVPFMcx5HiI
+    skip_symbols: true
+    
 artifacts:
   - path: '*.nupkg'
     name: FileServer
