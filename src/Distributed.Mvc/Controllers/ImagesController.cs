@@ -37,6 +37,11 @@ namespace CityOs.FileServer.Distributed.Mvc.Controllers
         [HttpPost]
         public async Task<IActionResult> SaveImageAsync(IFormFile image, bool isPublic = false)
         {
+            if(image == null)
+            {
+                return BadRequest();
+            }
+
             var fileInformationDto = image.ToFileInfoDto();
 
             var savedImage = await _imageAppService.SaveImageAsync(fileInformationDto);
