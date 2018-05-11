@@ -30,3 +30,8 @@ artifacts:
 skip_commits:
   files:
     - src/Provider.FileSystem/
+
+branches:
+  only:
+    - develop
+    - master
