@@ -41,13 +41,30 @@ namespace CityOs.FileServer.Infrastructure.Repositories
         }
 
         /// <inheritdoc />
+        public async Task<FileInformation> GetDocumentByVersionAsync(string fileName,int version)
+        {
+            var extension = Path.GetExtension(fileName);
+            var file = FileHelper.BuildFileNameWithVersion(fileName, version); 
+
+            var stream = await _fileServerProvider.GetFileByIdentifierAsync(file);
+
+            return new FileInformation(stream, fileName, MimeUtility.GetMimeMapping(extension));
+        }
+
+        /// <inheritdoc />
+        public async Task<FileInformation> GetLastFileVersionAsync(string fileName)
+        {
+            var extension = Path.GetExtension(fileName);
+            var stream = await _fileServerProvider.GetLastFileVersionAsync(fileName);
+
+            return new FileInformation(stream, fileName, MimeUtility.GetMimeMapping(extension));
+        }
+
+        /// <inheritdoc />
         public async Task<string> SaveDocumentAsync(FileInformation fileInformation)
         {
-            var uniqueFileName = StringHelper.GetUniqueFileName();
-            var extension = Path.GetExtension(fileInformation.OriginalFileName);
-
-            var newFileName = uniqueFileName + extension;
-
+            var fileVersion = await _fileServerProvider.GetNewFileVersionIfFileAlreadyExistAsync(fileInformation.OriginalFileName);
+            var newFileName = FileHelper.BuildFileNameWithVersion(fileInformation.OriginalFileName, fileVersion);
             await _fileServerProvider.WriteFileAsync(fileInformation.Stream, newFileName);
 
             return newFileName;

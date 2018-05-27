@@ -30,6 +30,16 @@ namespace CityOs.FileServer.Tests.Mocks
             return Task.FromResult(false);
         }
 
+        public Task<int> GetNewFileVersionIfFileAlreadyExistAsync(string fileName)
+        {
+            return Task.FromResult(1);
+        }
+
+        public Task<Stream> GetLastFileVersionAsync(string fileName)
+        {
+            return Task.FromResult(GetEmbeddedFileStream(fileName));
+        }
+
         public Task<Stream> GetFileByIdentifierAsync(string fileName)
         {
             return Task.FromResult(GetEmbeddedFileStream(fileName));

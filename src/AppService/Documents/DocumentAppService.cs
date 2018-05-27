@@ -37,9 +37,9 @@ namespace CityOs.FileServer.AppService
         }
 
         /// <inheritdoc />
-        public async Task<FileInformationDto> GetFileInfoByNameAsync(string imageName)
+        public async Task<FileInformationDto> GetFileInfoByVersionAsync(string fileName, int version)
         {
-            var fileInformation = await _documentRepository.GetDocumentByNameAsync(imageName);
+            var fileInformation = await _documentRepository.GetDocumentByVersionAsync(fileName,version);
 
             var fileInformationDto = Mapper.Map<FileInformationDto>(fileInformation);
 
@@ -47,7 +47,27 @@ namespace CityOs.FileServer.AppService
         }
 
         /// <inheritdoc />
-        public Task<string> SaveImageAsync(Stream stream, string fileName, string contentType)
+        public async Task<FileInformationDto> GetFileInfoByNameAsync(string fileName)
+        {
+            var fileInformation = await _documentRepository.GetDocumentByNameAsync(fileName);
+
+            var fileInformationDto = Mapper.Map<FileInformationDto>(fileInformation);
+
+            return fileInformationDto;
+        }
+
+        /// <inheritdoc />
+        public async Task<FileInformationDto> GetLastFileInfoVersionAsync(string imageName)
+        {
+            var fileInformation = await _documentRepository.GetLastFileVersionAsync(imageName);
+
+            var fileInformationDto = Mapper.Map<FileInformationDto>(fileInformation);
+
+            return fileInformationDto;
+        }
+
+        /// <inheritdoc />
+        public Task<string> SaveDocumentAsync(Stream stream, string fileName, string contentType)
         {
             var fileInfo = new FileInformation(stream, fileName, contentType);
 

@@ -34,5 +34,19 @@ namespace CityOs.FileServer.Provider.Core
         /// <param name="fileName">The file name</param>
         /// <returns></returns>
         Task<bool> FileExists(string fileName);
+
+        /// <summary>
+        /// Gets the new file version if file already exist asynchronous.
+        /// </summary>
+        /// <param name="fileName">Name of the file.</param>
+        /// <returns></returns>
+        Task<int> GetNewFileVersionIfFileAlreadyExistAsync(string fileName);
+
+        /// <summary>
+        /// Gets the last file version asynchronous.
+        /// </summary>
+        /// <param name="fileName">Name of the file.</param>
+        /// <returns></returns>
+        Task<Stream> GetLastFileVersionAsync(string fileName);
     }
 }

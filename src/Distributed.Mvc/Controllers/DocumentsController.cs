@@ -27,27 +27,39 @@ namespace CityOs.FileServer.Distributed.Mvc.Controllers
         [HttpGet("{fileName}")]
         public async Task<IActionResult> GetDocumentByNameAsync(string fileName)
         {
-            var fileInformation = await _documentAppService.GetFileInfoByNameAsync(fileName);
+            var fileInformation = await _documentAppService.GetLastFileInfoVersionAsync(fileName);
 
-            if (fileInformation == null) return NotFound();
+            if (fileInformation?.Stream == null) return NotFound();
+
+            return File(fileInformation.Stream, fileInformation.FileType);
+        }
+
+
+        [Authorize("ReadDocument")]
+        [HttpGet("{fileName}/version/{version}")]
+        public async Task<IActionResult> GetDocumentByVersionAsync(string fileName,int version)
+        {
+            var fileInformation = await _documentAppService.GetFileInfoByVersionAsync(fileName,version);
+
+            if (fileInformation?.Stream == null) return NotFound();
 
             return File(fileInformation.Stream, fileInformation.FileType);
         }
 
         [Authorize("WriteDocument")]
-        [HttpPost("images")]
-        public async Task<IActionResult> SaveImageAsync(IFormFile file)
+        [HttpPost]
+        public async Task<IActionResult> SaveDocumentAsync(IFormFile file)
         {
             var stream = file.OpenReadStream();
 
-            var savedFileName = await _documentAppService.SaveImageAsync(stream, file.FileName, file.ContentType);
+            var savedFileName = await _documentAppService.SaveDocumentAsync(stream, file.FileName, file.ContentType);
 
             return Ok(savedFileName);
         }
 
         [Authorize("WriteDocument")]
         [HttpDelete("images/{imageName}")]
-        public async Task<IActionResult> DeleteImageAsync(string imageName)
+        public async Task<IActionResult> DeleteDocumentAsync(string imageName)
         {
             await _documentAppService.DeleteImageAsync(imageName);
 

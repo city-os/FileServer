@@ -31,5 +31,6 @@ namespace CityOs.FileServer.Domain.Entities
         /// Gets the file type
         /// </summary>
         public string FileType { get; }
+
     }
 }

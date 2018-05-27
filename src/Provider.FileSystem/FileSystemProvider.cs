@@ -1,6 +1,10 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
+using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using ChinhDo.Transactions;
+using CityOs.FileServer.Crosscutting.Helpers;
 using CityOs.FileServer.Provider.Core;
 
 namespace CityOs.FileServer.Provider.FileSystem
@@ -50,6 +54,33 @@ namespace CityOs.FileServer.Provider.FileSystem
 
             return Task.FromResult(exists);
         }
+        
+        public async Task<int> GetNewFileVersionIfFileAlreadyExistAsync(string fileName)
+        {
+            var actualVersion = await GetCurrentFileVersionIfFileAlreadyExistAsync(fileName);
+            return ++actualVersion;
+        }
+
+        public Task<int> GetCurrentFileVersionIfFileAlreadyExistAsync(string fileName)
+        {
+            var fileNameWithoutExtension = Path.GetFileNameWithoutExtension(fileName);
+            var extension = Path.GetExtension(fileName);
+
+            var files = Directory.GetFiles(_baseFolder, $"{fileNameWithoutExtension}.*{extension}");
+            if (files.Length > 0)
+            {
+                var regex = new Regex($".(\\d+){extension}", RegexOptions.Singleline);
+                var filesVersions = files.Select(f => regex.Match(f).Groups[1].Value).ToList();
+
+                if (filesVersions.Count > 0)
+                {
+                    var actualVersion = filesVersions.ConvertAll(s => int.Parse(s)).Max();
+                    return Task.FromResult(actualVersion);
+                }
+            }
+
+            return Task.FromResult(0);
+        }
 
         /// <inheritdoc />
         public Task<Stream> GetFileByIdentifierAsync(string fileName)
@@ -65,6 +96,15 @@ namespace CityOs.FileServer.Provider.FileSystem
 
             return Task.FromResult<Stream>(null);
         }
+
+        /// <inheritdoc />
+        public async Task<Stream> GetLastFileVersionAsync(string fileName)
+        {
+            var lastVersion = await GetCurrentFileVersionIfFileAlreadyExistAsync(fileName);
+            var file = FileHelper.BuildFileNameWithVersion(fileName,lastVersion);
+            return await GetFileByIdentifierAsync(file);
+        }
+
 
         /// <inheritdoc />
         public async Task WriteFileAsync(Stream fileStream, string fileName)
